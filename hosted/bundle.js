@@ -83,7 +83,7 @@ var MealForm = function MealForm(props) {
             )
         ),
         React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: props.csrf }),
-        React.createElement('input', { className: 'makemealSubmit', type: 'submit', value: 'Make meal' })
+        React.createElement('input', { className: 'makeMealSubmit', type: 'submit', value: 'Make meal' })
     );
 };
 
@@ -107,7 +107,7 @@ var MealList = function MealList(props) {
         return React.createElement(
             'div',
             { key: meal._id, className: 'meal' },
-            React.createElement('img', { src: srcVal, alt: 'meal face', className: 'mealFace' }),
+            React.createElement('img', { src: srcVal, alt: 'meal image', className: 'mealImg' }),
             React.createElement(
                 'h3',
                 { className: 'date' },
@@ -135,14 +135,14 @@ var MealList = function MealList(props) {
             ),
             React.createElement(
                 'form',
-                { id: 'deletemeal',
+                { id: 'deleteMeal',
                     onSubmit: handleDelete,
-                    name: 'deletemeal',
-                    action: '/deletemeal',
+                    name: 'deleteMeal',
+                    action: '/deleteMeal',
                     method: 'DELETE' },
                 React.createElement('input', { type: 'hidden', name: '_id', value: meal._id }),
                 React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: props.csrf }),
-                React.createElement('input', { className: 'makemealDelete', type: 'submit', value: 'Delete' })
+                React.createElement('input', { className: 'makeMealDelete', type: 'submit', value: 'Delete' })
             )
         );
     });
@@ -161,7 +161,7 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
 };
 
 var setup = function setup(csrf) {
-    ReactDOM.render(React.createElement(MealForm, { csrf: csrf }), document.querySelector('#makemeal'));
+    ReactDOM.render(React.createElement(MealForm, { csrf: csrf }), document.querySelector('#makeMeal'));
 
     ReactDOM.render(React.createElement(MealList, { meals: [], csrf: csrf }), document.querySelector('#meals'));
 

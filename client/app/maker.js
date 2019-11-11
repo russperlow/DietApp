@@ -47,7 +47,7 @@ const MealForm = (props) => {
                 <option value='snack' selected>Snack</option>
             </select> 
             <input type='hidden' id='token' name='_csrf' value={props.csrf}/>
-            <input className='makemealSubmit' type='submit' value='Make meal'/>
+            <input className='makeMealSubmit' type='submit' value='Make meal'/>
         </form>
     );
 };
@@ -68,21 +68,21 @@ const MealList = function(props){
         let srcVal = `/assets/img/${meal.time}.png`;
         return(
             <div key={meal._id} className='meal'>
-                <img src={srcVal} alt='meal face' className='mealFace'/>
+                <img src={srcVal} alt='meal image' className='mealImg'/>
                 <h3 className='date'>Date: {formattedDate} </h3>
                 <h3 className='mealName'>Food: {meal.food}</h3>
                 <h3 className='mealCalories'>Calories: {meal.calories}</h3>
                 <h3 className='time'>Meal Time: {meal.time}</h3>
 
-                <form id='deletemeal'
+                <form id='deleteMeal'
                         onSubmit={handleDelete}
-                        name='deletemeal'
-                        action='/deletemeal'
+                        name='deleteMeal'
+                        action='/deleteMeal'
                         method='DELETE'>
 
                             <input type='hidden' name='_id' value={meal._id}/>
                             <input type='hidden' id='token' name='_csrf' value={props.csrf}/>
-                            <input className='makemealDelete' type='submit' value='Delete'/>
+                            <input className='makeMealDelete' type='submit' value='Delete'/>
 
                 </form>
             </div>
@@ -106,7 +106,7 @@ const loadmealsFromServer = (csrf) => {
 
 const setup = function(csrf){
     ReactDOM.render(
-        <MealForm csrf={csrf}/>, document.querySelector('#makemeal')
+        <MealForm csrf={csrf}/>, document.querySelector('#makeMeal')
     );
 
     ReactDOM.render(
