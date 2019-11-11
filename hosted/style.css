@@ -50,7 +50,7 @@ nav:nth-child(1) {
 .mealForm {
     border: 2px solid #338acc;
     height: 35px;
-    width: 1000px;
+    width: 100%;
     margin-top:0px;
     padding-top:10px;
     background-color: #55acee;
@@ -60,14 +60,16 @@ nav:nth-child(1) {
 
 .mealForm label {
     display: inline-block;
-    width: 75px;
-    margin-left: 10px;
+    text-align: right;
+    width: 98x;
+    margin-right: 10px;
+    margin-left: 5px;
     font-size: 1.2em;
     float: left;
     color: white;
 }
 
-.mealForm input[type=text] {
+.mealForm input[type=text], .mealForm input[type=date] {
     float:left;
 }
 

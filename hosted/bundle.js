@@ -52,7 +52,7 @@ var MealForm = function MealForm(props) {
             { htmlFor: 'date' },
             'Date:'
         ),
-        React.createElement('input', { id: 'mealDate', type: 'date', name: 'date', value: '2019-11-11', min: '2019-11-01' }),
+        React.createElement('input', { id: 'mealDate', type: 'date', name: 'date', min: '2019-11-01' }),
         React.createElement(
             'label',
             { htmlFor: 'time' },
@@ -155,7 +155,7 @@ var MealList = function MealList(props) {
 };
 
 var loadmealsFromServer = function loadmealsFromServer(csrf) {
-    sendAjax('GET', '/getmeals', null, function (data) {
+    sendAjax('GET', '/getMeals', null, function (data) {
         ReactDOM.render(React.createElement(MealList, { meals: data.meals, csrf: csrf }), document.querySelector('#meals'));
     });
 };

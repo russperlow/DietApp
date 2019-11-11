@@ -38,7 +38,7 @@ const MealForm = (props) => {
             <label htmlFor='calories'>Calories:</label>
             <input id='mealCalories' type='text' name='calories' placeholder='100'/>
             <label htmlFor='date'>Date:</label>
-            <input id='mealDate' type='date' name='date' value='2019-11-11' min='2019-11-01'/>
+            <input id='mealDate' type='date' name='date' min='2019-11-01'/>
             <label htmlFor='time'>Meal Time:</label>
             <select name='time' id='time'>
                 <option value='breakfast'>Breakfast</option>
@@ -97,7 +97,7 @@ const MealList = function(props){
 };
 
 const loadmealsFromServer = (csrf) => {
-    sendAjax('GET', '/getmeals', null, (data) => {
+    sendAjax('GET', '/getMeals', null, (data) => {
         ReactDOM.render(
             <MealList meals={data.meals} csrf={csrf}/>, document.querySelector('#meals')
         );
