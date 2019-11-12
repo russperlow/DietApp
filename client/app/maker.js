@@ -61,32 +61,40 @@ const MealList = function(props){
         );
     }
 
+    const mealNodes = Object.keys(props.meals).map(dateKey => {
 
-    const mealNodes = props.meals.map(function(meal){
-        console.log(meal);
-        let formattedDate = meal.date.split('T')[0];
-        let srcVal = `/assets/img/${meal.time}.png`;
-        return(
-            <div key={meal._id} className='meal'>
-                <img src={srcVal} alt='meal image' className='mealImg'/>
-                <h3 className='date'>Date: {formattedDate} </h3>
-                <h3 className='mealName'>Food: {meal.food}</h3>
-                <h3 className='mealCalories'>Calories: {meal.calories}</h3>
-                <h3 className='time'>Meal Time: {meal.time}</h3>
+        let formattedDate = new Date(dateKey);
+        formattedDate = `${formattedDate.getMonth()+1}/${formattedDate.getUTCDate()}/${formattedDate.getFullYear()}`
 
-                <form id='deleteMeal'
-                        onSubmit={handleDelete}
-                        name='deleteMeal'
-                        action='/deleteMeal'
-                        method='DELETE'>
+        let dateHtml = <div key={dateKey}>
+            <button className='date collapsible'>{formattedDate}</button>
+            {props.meals[dateKey].map((meal, index) => {
+                let srcVal = `/assets/img/${meal.time}.png`;
+                return(
+                    <div className='meal collapsible-content' key={meal._id}>
+                        <img src={srcVal} alt ='meal image' className='mealImg'/>
+                        <h3 className='time'>{meal.time}</h3>
+                        <h3 className='mealName'>Food: {meal.food}</h3>
+                        <h3 className='mealCalories'>Calories: {meal.calories}</h3>
 
-                            <input type='hidden' name='_id' value={meal._id}/>
-                            <input type='hidden' id='token' name='_csrf' value={props.csrf}/>
-                            <input className='makeMealDelete' type='submit' value='Delete'/>
+                        <form id='deleteMeal'
+                            onSubmit={handleDelete}
+                            name='deleteMeal'
+                            action='/deleteMeal'
+                            method='DELETE'>
 
-                </form>
-            </div>
-        );
+                                <input type='hidden' name='_id' value={meal._id}/>
+                                <input type='hidden' id='token' name='_csrf' value={props.csrf}/>
+                                <input className='makeMealDelete' type='submit' value='Delete'/>
+
+                        </form>
+                    </div>
+                )
+            })}
+        </div>;
+
+        return(dateHtml);
+
     });
 
     return(
@@ -98,9 +106,42 @@ const MealList = function(props){
 
 const loadmealsFromServer = (csrf) => {
     sendAjax('GET', '/getMeals', null, (data) => {
+
+        data.meals.sort(function(a,b){
+            return new Date(a.date) - new Date(b.date);
+        });
+
+        let dataObjects = {};
+        let currentDate = null;
+
+        data.meals.forEach(element => {
+            let thisDate = new Date(element.date);
+            if(currentDate == null || thisDate.getTime() != currentDate.getTime()){
+                currentDate = thisDate;
+                dataObjects[thisDate] = [];
+            }
+
+            dataObjects[thisDate].push(element);
+        });
+
         ReactDOM.render(
-            <MealList meals={data.meals} csrf={csrf}/>, document.querySelector('#meals')
+            <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
         );
+
+        // Since not using react class, this is the only way to get button on clicks working
+        let coll = document.getElementsByClassName('collapsible');
+        for(let i = 0; i < coll.length; i++){
+            coll[i].onclick = function(){
+                console.log('click');
+                this.classList.toggle('active');
+                var content = this.nextElementSibling;
+                if(content.style.display === 'block'){
+                    content.style.display = 'none';
+                }else{
+                    content.style.display = 'block';
+                }
+            };
+        }
     }); 
 };
 

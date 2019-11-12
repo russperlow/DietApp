@@ -100,51 +100,58 @@ var MealList = function MealList(props) {
         );
     }
 
-    var mealNodes = props.meals.map(function (meal) {
-        console.log(meal);
-        var formattedDate = meal.date.split('T')[0];
-        var srcVal = '/assets/img/' + meal.time + '.png';
-        return React.createElement(
+    var mealNodes = Object.keys(props.meals).map(function (dateKey) {
+
+        var formattedDate = new Date(dateKey);
+        formattedDate = formattedDate.getMonth() + 1 + '/' + formattedDate.getUTCDate() + '/' + formattedDate.getFullYear();
+
+        var dateHtml = React.createElement(
             'div',
-            { key: meal._id, className: 'meal' },
-            React.createElement('img', { src: srcVal, alt: 'meal image', className: 'mealImg' }),
+            { key: dateKey },
             React.createElement(
-                'h3',
-                { className: 'date' },
-                'Date: ',
-                formattedDate,
-                ' '
+                'button',
+                { className: 'date collapsible' },
+                formattedDate
             ),
-            React.createElement(
-                'h3',
-                { className: 'mealName' },
-                'Food: ',
-                meal.food
-            ),
-            React.createElement(
-                'h3',
-                { className: 'mealCalories' },
-                'Calories: ',
-                meal.calories
-            ),
-            React.createElement(
-                'h3',
-                { className: 'time' },
-                'Meal Time: ',
-                meal.time
-            ),
-            React.createElement(
-                'form',
-                { id: 'deleteMeal',
-                    onSubmit: handleDelete,
-                    name: 'deleteMeal',
-                    action: '/deleteMeal',
-                    method: 'DELETE' },
-                React.createElement('input', { type: 'hidden', name: '_id', value: meal._id }),
-                React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: props.csrf }),
-                React.createElement('input', { className: 'makeMealDelete', type: 'submit', value: 'Delete' })
-            )
+            props.meals[dateKey].map(function (meal, index) {
+                var srcVal = '/assets/img/' + meal.time + '.png';
+                return React.createElement(
+                    'div',
+                    { className: 'meal collapsible-content', key: meal._id },
+                    React.createElement('img', { src: srcVal, alt: 'meal image', className: 'mealImg' }),
+                    React.createElement(
+                        'h3',
+                        { className: 'time' },
+                        meal.time
+                    ),
+                    React.createElement(
+                        'h3',
+                        { className: 'mealName' },
+                        'Food: ',
+                        meal.food
+                    ),
+                    React.createElement(
+                        'h3',
+                        { className: 'mealCalories' },
+                        'Calories: ',
+                        meal.calories
+                    ),
+                    React.createElement(
+                        'form',
+                        { id: 'deleteMeal',
+                            onSubmit: handleDelete,
+                            name: 'deleteMeal',
+                            action: '/deleteMeal',
+                            method: 'DELETE' },
+                        React.createElement('input', { type: 'hidden', name: '_id', value: meal._id }),
+                        React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: props.csrf }),
+                        React.createElement('input', { className: 'makeMealDelete', type: 'submit', value: 'Delete' })
+                    )
+                );
+            })
         );
+
+        return dateHtml;
     });
 
     return React.createElement(
@@ -156,7 +163,40 @@ var MealList = function MealList(props) {
 
 var loadmealsFromServer = function loadmealsFromServer(csrf) {
     sendAjax('GET', '/getMeals', null, function (data) {
-        ReactDOM.render(React.createElement(MealList, { meals: data.meals, csrf: csrf }), document.querySelector('#meals'));
+
+        data.meals.sort(function (a, b) {
+            return new Date(a.date) - new Date(b.date);
+        });
+
+        var dataObjects = {};
+        var currentDate = null;
+
+        data.meals.forEach(function (element) {
+            var thisDate = new Date(element.date);
+            if (currentDate == null || thisDate.getTime() != currentDate.getTime()) {
+                currentDate = thisDate;
+                dataObjects[thisDate] = [];
+            }
+
+            dataObjects[thisDate].push(element);
+        });
+
+        ReactDOM.render(React.createElement(MealList, { meals: dataObjects, csrf: csrf }), document.querySelector('#meals'));
+
+        // Since not using react class, this is the only way to get button on clicks working
+        var coll = document.getElementsByClassName('collapsible');
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].onclick = function () {
+                console.log('click');
+                this.classList.toggle('active');
+                var content = this.nextElementSibling;
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                } else {
+                    content.style.display = 'block';
+                }
+            };
+        }
     });
 };
 
