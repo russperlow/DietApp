@@ -69,6 +69,7 @@ const MealList = function(props){
         let dateHtml = <div key={dateKey}>
             <button className='date collapsible'>{formattedDate}</button>
             {props.meals[dateKey].map((meal, index) => {
+                console.log(meal);
                 let srcVal = `/assets/img/${meal.time}.png`;
                 return(
                     <div className='meal collapsible-content' key={meal._id}>
@@ -124,6 +125,8 @@ const loadmealsFromServer = (csrf) => {
             dataObjects[thisDate].push(element);
         });
 
+        console.log(dataObjects);
+
         ReactDOM.render(
             <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
         );
@@ -132,13 +135,14 @@ const loadmealsFromServer = (csrf) => {
         let coll = document.getElementsByClassName('collapsible');
         for(let i = 0; i < coll.length; i++){
             coll[i].onclick = function(){
-                console.log('click');
                 this.classList.toggle('active');
-                var content = this.nextElementSibling;
-                if(content.style.display === 'block'){
-                    content.style.display = 'none';
-                }else{
-                    content.style.display = 'block';
+                var children = this.parentNode.childNodes;
+                for(let j = 1; j < children.length; j++){
+                    if(children[j].style.display === 'block'){
+                        children[j].style.display = 'none';
+                    }else{
+                        children[j].style.display = 'block';
+                    }
                 }
             };
         }

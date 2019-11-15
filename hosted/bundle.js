@@ -114,6 +114,7 @@ var MealList = function MealList(props) {
                 formattedDate
             ),
             props.meals[dateKey].map(function (meal, index) {
+                console.log(meal);
                 var srcVal = '/assets/img/' + meal.time + '.png';
                 return React.createElement(
                     'div',
@@ -181,19 +182,22 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
             dataObjects[thisDate].push(element);
         });
 
+        console.log(dataObjects);
+
         ReactDOM.render(React.createElement(MealList, { meals: dataObjects, csrf: csrf }), document.querySelector('#meals'));
 
         // Since not using react class, this is the only way to get button on clicks working
         var coll = document.getElementsByClassName('collapsible');
         for (var i = 0; i < coll.length; i++) {
             coll[i].onclick = function () {
-                console.log('click');
                 this.classList.toggle('active');
-                var content = this.nextElementSibling;
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                } else {
-                    content.style.display = 'block';
+                var children = this.parentNode.childNodes;
+                for (var j = 1; j < children.length; j++) {
+                    if (children[j].style.display === 'block') {
+                        children[j].style.display = 'none';
+                    } else {
+                        children[j].style.display = 'block';
+                    }
                 }
             };
         }
