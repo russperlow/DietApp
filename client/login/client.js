@@ -4,7 +4,7 @@ const handleLogin = (e) => {
     $('#mealMessage').animate({width: 'hide'}, 350);
 
     if($('#user').val() == '' || $('#pass').val() == ''){
-        handleError('Rawr! username or pass is empty');
+        handleError('Username or pass is empty');
         return false;
     }
 
@@ -21,12 +21,12 @@ const handleSignup = (e) => {
     $('#mealMessage').animate({width: 'hide'}, 350);
 
     if($('#user').val() == '' || $('#pass').val() == '' || $('#pass2').val() == ''){
-        handleError('Rawr! username or pass is empty');
+        handleError('Username or pass is empty');
         return false;
     }
 
     if($('#pass').val() !== $('#pass2').val()){
-        handleError('Rawr! Passwords do not match');
+        handleError('Passwords do not match');
         return false;
     }
 

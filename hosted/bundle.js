@@ -83,7 +83,7 @@ var MealForm = function MealForm(props) {
             )
         ),
         React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: props.csrf }),
-        React.createElement('input', { className: 'makeMealSubmit', type: 'submit', value: 'Make meal' })
+        React.createElement('input', { className: 'makeMealSubmit', type: 'submit', value: 'Make Meal' })
     );
 };
 

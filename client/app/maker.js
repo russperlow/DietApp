@@ -47,7 +47,7 @@ const MealForm = (props) => {
                 <option value='snack' selected>Snack</option>
             </select> 
             <input type='hidden' id='token' name='_csrf' value={props.csrf}/>
-            <input className='makeMealSubmit' type='submit' value='Make meal'/>
+            <input className='makeMealSubmit' type='submit' value='Make Meal'/>
         </form>
     );
 };
