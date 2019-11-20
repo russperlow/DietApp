@@ -24,31 +24,49 @@ const handleDelete = (e) => {
     });
 }
 
+const showHideMealForm = (element) => {
+    console.log('Show hide meal form');
+
+    let mealForm = document.getElementById('mealForm');
+    console.log(mealForm.style.display);
+
+    if(mealForm.style.display === 'none' || mealForm.style.display == ''){
+        element.innerText = 'Hide Meal Form';
+        mealForm.style.display = 'block';
+    }else{
+        element.innerText = 'Show Meal Form';
+        mealForm.style.display = 'none';
+    }
+}
+
 const MealForm = (props) => {
     return(
-        <form id='mealForm'
-                onSubmit={handleMeal}
-                name='mealForm'
-                action='/maker'
-                method='POST'
-                className='mealForm'>
-
-            <label htmlFor='food'>Food:</label>
-            <input id='mealName' type='text' name='food' placeholder='Pasta'/>
-            <label htmlFor='calories'>Calories:</label>
-            <input id='mealCalories' type='text' name='calories' placeholder='100'/>
-            <label htmlFor='date'>Date:</label>
-            <input id='mealDate' type='date' name='date' min='2019-11-01'/>
-            <label htmlFor='time'>Meal Time:</label>
-            <select name='time' id='time'>
-                <option value='breakfast'>Breakfast</option>
-                <option value='lunch'>Lunch</option>
-                <option value='dinner'>Dinner</option>
-                <option value='snack' selected>Snack</option>
-            </select> 
-            <input type='hidden' id='token' name='_csrf' value={props.csrf}/>
-            <input className='makeMealSubmit' type='submit' value='Make Meal'/>
-        </form>
+        <div id='mealFormDiv'>
+            <form id='mealForm'
+                    onSubmit={handleMeal}
+                    name='mealForm'
+                    action='/maker'
+                    method='POST'
+                    className='mealForm'>
+                <label><strong>Add a New Meal!</strong></label>
+                <label htmlFor='food'>Food:</label>
+                <input id='mealName' type='text' name='food' placeholder='Pasta'/>
+                <label htmlFor='calories'>Calories:</label>
+                <input id='mealCalories' type='text' name='calories' placeholder='100'/>
+                <label htmlFor='date'>Date:</label>
+                <input id='mealDate' type='date' name='date' min='2019-11-01'/>
+                <label htmlFor='time'>Meal Time:</label>
+                <select name='time' id='time'>
+                    <option value='breakfast'>Breakfast</option>
+                    <option value='lunch'>Lunch</option>
+                    <option value='dinner'>Dinner</option>
+                    <option value='snack' selected>Snack</option>
+                </select> 
+                <input type='hidden' id='token' name='_csrf' value={props.csrf}/>
+                <input className='makeMealSubmit' type='submit' value='Make Meal'/>
+            </form>
+            <button id='showhidemealForm'>Show Meal Form</button>
+        </div>
     );
 };
 
@@ -153,6 +171,8 @@ const setup = function(csrf){
     ReactDOM.render(
         <MealForm csrf={csrf}/>, document.querySelector('#makeMeal')
     );
+
+    document.getElementById('showhidemealForm').onclick = function(){showHideMealForm(this);};
 
     ReactDOM.render(
         <MealList meals={[]} csrf={csrf}/>, document.querySelector('#meals')

@@ -26,64 +26,97 @@ var handleDelete = function handleDelete(e) {
     });
 };
 
+var showHideMealForm = function showHideMealForm(element) {
+    console.log('Show hide meal form');
+
+    var mealForm = document.getElementById('mealForm');
+    console.log(mealForm.style.display);
+
+    if (mealForm.style.display === 'none' || mealForm.style.display == '') {
+        element.innerText = 'Hide Meal Form';
+        mealForm.style.display = 'block';
+    } else {
+        element.innerText = 'Show Meal Form';
+        mealForm.style.display = 'none';
+    }
+};
+
 var MealForm = function MealForm(props) {
     return React.createElement(
-        'form',
-        { id: 'mealForm',
-            onSubmit: handleMeal,
-            name: 'mealForm',
-            action: '/maker',
-            method: 'POST',
-            className: 'mealForm' },
+        'div',
+        { id: 'mealFormDiv' },
         React.createElement(
-            'label',
-            { htmlFor: 'food' },
-            'Food:'
-        ),
-        React.createElement('input', { id: 'mealName', type: 'text', name: 'food', placeholder: 'Pasta' }),
-        React.createElement(
-            'label',
-            { htmlFor: 'calories' },
-            'Calories:'
-        ),
-        React.createElement('input', { id: 'mealCalories', type: 'text', name: 'calories', placeholder: '100' }),
-        React.createElement(
-            'label',
-            { htmlFor: 'date' },
-            'Date:'
-        ),
-        React.createElement('input', { id: 'mealDate', type: 'date', name: 'date', min: '2019-11-01' }),
-        React.createElement(
-            'label',
-            { htmlFor: 'time' },
-            'Meal Time:'
-        ),
-        React.createElement(
-            'select',
-            { name: 'time', id: 'time' },
+            'form',
+            { id: 'mealForm',
+                onSubmit: handleMeal,
+                name: 'mealForm',
+                action: '/maker',
+                method: 'POST',
+                className: 'mealForm' },
             React.createElement(
-                'option',
-                { value: 'breakfast' },
-                'Breakfast'
+                'label',
+                null,
+                React.createElement(
+                    'strong',
+                    null,
+                    'Add a New Meal!'
+                )
             ),
             React.createElement(
-                'option',
-                { value: 'lunch' },
-                'Lunch'
+                'label',
+                { htmlFor: 'food' },
+                'Food:'
+            ),
+            React.createElement('input', { id: 'mealName', type: 'text', name: 'food', placeholder: 'Pasta' }),
+            React.createElement(
+                'label',
+                { htmlFor: 'calories' },
+                'Calories:'
+            ),
+            React.createElement('input', { id: 'mealCalories', type: 'text', name: 'calories', placeholder: '100' }),
+            React.createElement(
+                'label',
+                { htmlFor: 'date' },
+                'Date:'
+            ),
+            React.createElement('input', { id: 'mealDate', type: 'date', name: 'date', min: '2019-11-01' }),
+            React.createElement(
+                'label',
+                { htmlFor: 'time' },
+                'Meal Time:'
             ),
             React.createElement(
-                'option',
-                { value: 'dinner' },
-                'Dinner'
+                'select',
+                { name: 'time', id: 'time' },
+                React.createElement(
+                    'option',
+                    { value: 'breakfast' },
+                    'Breakfast'
+                ),
+                React.createElement(
+                    'option',
+                    { value: 'lunch' },
+                    'Lunch'
+                ),
+                React.createElement(
+                    'option',
+                    { value: 'dinner' },
+                    'Dinner'
+                ),
+                React.createElement(
+                    'option',
+                    { value: 'snack', selected: true },
+                    'Snack'
+                )
             ),
-            React.createElement(
-                'option',
-                { value: 'snack', selected: true },
-                'Snack'
-            )
+            React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: props.csrf }),
+            React.createElement('input', { className: 'makeMealSubmit', type: 'submit', value: 'Make Meal' })
         ),
-        React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: props.csrf }),
-        React.createElement('input', { className: 'makeMealSubmit', type: 'submit', value: 'Make Meal' })
+        React.createElement(
+            'button',
+            { id: 'showhidemealForm' },
+            'Show Meal Form'
+        )
     );
 };
 
@@ -206,6 +239,10 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
 
 var setup = function setup(csrf) {
     ReactDOM.render(React.createElement(MealForm, { csrf: csrf }), document.querySelector('#makeMeal'));
+
+    document.getElementById('showhidemealForm').onclick = function () {
+        showHideMealForm(this);
+    };
 
     ReactDOM.render(React.createElement(MealList, { meals: [], csrf: csrf }), document.querySelector('#meals'));
 
