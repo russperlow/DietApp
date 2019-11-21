@@ -142,7 +142,7 @@ var MealList = function MealList(props) {
         formattedDate = formattedDate.getMonth() + 1 + '/' + formattedDate.getUTCDate() + '/' + formattedDate.getFullYear();
 
         var tableClassName = 'column';
-        if (i % 4 == 0) {
+        if (i % 7 == 0) {
             tableClassName = 'row';
         }
         i++;
