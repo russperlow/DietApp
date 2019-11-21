@@ -134,6 +134,7 @@ const MealList = function(props){
 const loadmealsFromServer = (csrf) => {
     sendAjax('GET', '/getMeals', null, (data) => {
 
+        // Sort the dates from oldest to newest
         data.meals.sort(function(a,b){
             return new Date(a.date) - new Date(b.date);
         });
@@ -141,8 +142,11 @@ const loadmealsFromServer = (csrf) => {
         let dataObjects = {};
         let currentDate = null;
 
+        // Group the meals to their respective dates
         data.meals.forEach(element => {
             let thisDate = new Date(element.date);
+
+            // Since they have been sorted, we just check for a new date to move on to another day, if its the same as the current one, we add it
             if(currentDate == null || thisDate.getTime() != currentDate.getTime()){
                 currentDate = thisDate;
                 dataObjects[thisDate] = [];
@@ -160,16 +164,30 @@ const loadmealsFromServer = (csrf) => {
         for(let i = 0; i < coll.length; i++){
             coll[i].onclick = function(){
 
+                // Use this to close this element if it was already active, otherwise the process is undone and it stays open
+                var alreadyActive = false;
+                if(this.classList.contains('active'))
+                    alreadyActive = true;
+
                 // Remove the active & collapsible-active classes from the last selected item
                 $('.active').removeClass('active');
                 $('.collapsible-content').removeClass('collapsible-active');
+                $('.columnrow-active').removeClass('columnrow-active');
                 
+                // This one was active so we have closed it and don't want to re-open it
+                if(alreadyActive) return;
+
                 // Toggle actie on this element
                 this.classList.toggle('active');
 
                 // Get the child and give it the collapsible active class
                 var children = this.parentNode.childNodes;
-                children[1].classList.add('collapsible-active');
+                this.parentNode.classList.add('columnrow-active');
+
+                // Must loop through all children so that all meals are made active
+                for(let j = 0; j < children.length; j++){
+                    children[j].classList.add('collapsible-active');
+                }
             };
         }
     }); 

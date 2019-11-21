@@ -91,7 +91,7 @@ nav:nth-child(1) {
     padding: 2px;
 }
 
-.makeMealSubmit {
+.makeMealSubmit, .makeMealDelete {
     transition: background-color 0.4s ease;
     display: inline;
     background-color: #FAB735;
@@ -107,7 +107,7 @@ nav:nth-child(1) {
     color: white;
 }
 
-.makeMealSubmit:hover {
+.makeMealSubmit:hover, .makeMealDelete:hover {
     transition: background-color 0.4s ease;
     background-color: #26704F;
     border-color: #FAB735;
@@ -252,7 +252,6 @@ nav:nth-child(1) {
     background-color: #55acee;
     padding: 10px;
     min-height:60px;
-    overflow: hidden;
 }
 
 .meal:hover {
@@ -262,7 +261,7 @@ nav:nth-child(1) {
 }
 
 img.mealImg {
-    margin-left: 25px;
+    margin-left: 25%;
     margin-right: 10px;
     height: 50px;
     width: 50px;
@@ -283,34 +282,8 @@ h3.mealName {
     float:left;
     width: 150px;
     font-weight: bold;
-    padding-left: 65px;
-    font-size: 1.5em;
-}
-
-h3.mealAge {
-    float:right;
-    text-align: left;
-    width: 50px;
-    font-weight: bold;
-    padding-right: 40px;
-    font-size: 1.5em;
-}
-
-h3.mealColor{
-    float: right;
-    text-align: left;
-    width: 100px;
-    font-weight: bold;
-    padding-right: 40px;
-    font-size: 1.5em;
-}
-
-.meal:first-child {
-    margin-top: 10px;
-}
-
-.meal:last-child {
-    /* margin-bottom:10px; */
+    font-size: 1.2em;
+    word-wrap: break-word;
 }
 
 .collapsible {
@@ -338,8 +311,15 @@ h3.mealColor{
 }
 
 .column, .row{
-    /* width: 20%; */
     width: 14.2657%;
     top: 0px;
+    height: auto;
     display: inline-block;
+    flex-direction: column;
+    overflow: auto;
+    overflow-y: auto;
+}
+
+.columnrow-active{
+    height: 27%;
 }
