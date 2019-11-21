@@ -80,15 +80,22 @@ const MealList = function(props){
         );
     }
 
+    var i = 0;
+
     const mealNodes = Object.keys(props.meals).map(dateKey => {
 
         let formattedDate = new Date(dateKey);
         formattedDate = `${formattedDate.getMonth()+1}/${formattedDate.getUTCDate()}/${formattedDate.getFullYear()}`
 
-        let dateHtml = <div key={dateKey}>
+        var tableClassName = 'column';
+        if(i % 4 == 0){
+            tableClassName = 'row';
+        }
+        i++;
+
+        let dateHtml = <div key={dateKey} className={tableClassName}>
             <button className='date collapsible'>{formattedDate}</button>
             {props.meals[dateKey].map((meal, index) => {
-                console.log(meal);
                 let srcVal = `/assets/img/${meal.time}.png`;
                 return(
                     <div className='meal collapsible-content' key={meal._id}>
@@ -144,8 +151,6 @@ const loadmealsFromServer = (csrf) => {
             dataObjects[thisDate].push(element);
         });
 
-        console.log(dataObjects);
-
         ReactDOM.render(
             <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
         );
@@ -154,15 +159,17 @@ const loadmealsFromServer = (csrf) => {
         let coll = document.getElementsByClassName('collapsible');
         for(let i = 0; i < coll.length; i++){
             coll[i].onclick = function(){
+
+                // Remove the active & collapsible-active classes from the last selected item
+                $('.active').removeClass('active');
+                $('.collapsible-content').removeClass('collapsible-active');
+                
+                // Toggle actie on this element
                 this.classList.toggle('active');
+
+                // Get the child and give it the collapsible active class
                 var children = this.parentNode.childNodes;
-                for(let j = 1; j < children.length; j++){
-                    if(children[j].style.display === 'block'){
-                        children[j].style.display = 'none';
-                    }else{
-                        children[j].style.display = 'block';
-                    }
-                }
+                children[1].classList.add('collapsible-active');
             };
         }
     }); 

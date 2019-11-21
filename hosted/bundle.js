@@ -134,21 +134,28 @@ var MealList = function MealList(props) {
         );
     }
 
+    var i = 0;
+
     var mealNodes = Object.keys(props.meals).map(function (dateKey) {
 
         var formattedDate = new Date(dateKey);
         formattedDate = formattedDate.getMonth() + 1 + '/' + formattedDate.getUTCDate() + '/' + formattedDate.getFullYear();
 
+        var tableClassName = 'column';
+        if (i % 4 == 0) {
+            tableClassName = 'row';
+        }
+        i++;
+
         var dateHtml = React.createElement(
             'div',
-            { key: dateKey },
+            { key: dateKey, className: tableClassName },
             React.createElement(
                 'button',
                 { className: 'date collapsible' },
                 formattedDate
             ),
             props.meals[dateKey].map(function (meal, index) {
-                console.log(meal);
                 var srcVal = '/assets/img/' + meal.time + '.png';
                 return React.createElement(
                     'div',
@@ -216,23 +223,23 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
             dataObjects[thisDate].push(element);
         });
 
-        console.log(dataObjects);
-
         ReactDOM.render(React.createElement(MealList, { meals: dataObjects, csrf: csrf }), document.querySelector('#meals'));
 
         // Since not using react class, this is the only way to get button on clicks working
         var coll = document.getElementsByClassName('collapsible');
         for (var i = 0; i < coll.length; i++) {
             coll[i].onclick = function () {
+
+                // Remove the active & collapsible-active classes from the last selected item
+                $('.active').removeClass('active');
+                $('.collapsible-content').removeClass('collapsible-active');
+
+                // Toggle actie on this element
                 this.classList.toggle('active');
+
+                // Get the child and give it the collapsible active class
                 var children = this.parentNode.childNodes;
-                for (var j = 1; j < children.length; j++) {
-                    if (children[j].style.display === 'block') {
-                        children[j].style.display = 'none';
-                    } else {
-                        children[j].style.display = 'block';
-                    }
-                }
+                children[1].classList.add('collapsible-active');
             };
         }
     });

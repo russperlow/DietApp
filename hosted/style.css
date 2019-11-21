@@ -235,7 +235,7 @@ nav:nth-child(1) {
 }
 
 #meals {
-    width: 40%;
+    /* width: 40%; */
     min-width: 400px;
     border: 2px solid #26704F;
     border-radius: 4px;
@@ -334,4 +334,13 @@ h3.mealColor{
     display: none;
     overflow: hidden;
     background-color: #f1f1f1;
+}
+
+.collapsible-active{
+    display: block !important;
+}
+
+.column, .row{
+    width: 20%;
+    float: left;
 }
