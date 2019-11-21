@@ -21,16 +21,17 @@ var handleDelete = function handleDelete(e) {
 
     $('mealMessage').animate({ width: 'hide' }, 350);
 
-    sendAjax('DELETE', $('#deleteMeal').attr('action'), $('#deleteMeal').serialize(), function () {
+    // Serialize the data ourselves because jquery is picky about how we are selecting the #deleteMeal
+    var serializedData = '_id=' + e.target.querySelector('input').value + '&_csrf=' + e.target.querySelectorAll('input')[1].value;
+
+    sendAjax('DELETE', e.target.action, serializedData, function () {
         loadmealsFromServer($('token').val());
     });
 };
 
 var showHideMealForm = function showHideMealForm(element) {
-    console.log('Show hide meal form');
 
     var mealForm = document.getElementById('mealForm');
-    console.log(mealForm.style.display);
 
     if (mealForm.style.display === 'none' || mealForm.style.display == '') {
         element.innerText = 'Hide Meal Form';
