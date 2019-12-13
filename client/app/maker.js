@@ -145,19 +145,42 @@ const loadmealsFromServer = (csrf) => {
         // Group the meals to their respective dates
         data.meals.forEach(element => {
             let thisDate = new Date(element.date);
-
+            let formattedDate = `${thisDate.getMonth()+1}/${thisDate.getUTCDate()}/${thisDate.getFullYear()}`
+            
             // Since they have been sorted, we just check for a new date to move on to another day, if its the same as the current one, we add it
             if(currentDate == null || thisDate.getTime() != currentDate.getTime()){
                 currentDate = thisDate;
-                dataObjects[thisDate] = [];
+                dataObjects[formattedDate] = [];
             }
 
-            dataObjects[thisDate].push(element);
+            dataObjects[formattedDate].push(element);
         });
 
         ReactDOM.render(
             <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
         );
+
+        ReactDOM.render(
+            <ShowCalendar month={10} year={2019} meals={dataObjects}/>, document.querySelector('#calendar')
+        );
+    
+        let prevBtn = document.getElementById('prev-month');
+        prevBtn.onclick = function(){
+            previousMonth(dataObjects);
+        }
+    
+        let nextBtn = document.getElementById('next-month');
+        nextBtn.onclick = function(){
+            nextMonth(dataObjects);
+        }
+
+        // let tds = document.getElementsByClassName('clickable');
+        // for(let i = 0; i < tds.length; i++){
+        //     tds[i].onclick = function(){
+        //         console.log(this);
+        //     }
+        // }
+        
 
         // Since not using react class, this is the only way to get button on clicks working
         let coll = document.getElementsByClassName('collapsible');
@@ -197,17 +220,6 @@ const setup = function(csrf){
     ReactDOM.render(
         <ShowCalendar month={11} year={2019}/>, document.querySelector('#calendar')
     );
-
-    let prevBtn = document.getElementById('prev-month');
-    prevBtn.onclick = function(){
-        previousMonth();
-    }
-
-    let nextBtn = document.getElementById('next-month');
-    nextBtn.onclick = function(){
-        nextMonth();
-    }
-
 
     ReactDOM.render(
         <MealForm csrf={csrf}/>, document.querySelector('#makeMeal')

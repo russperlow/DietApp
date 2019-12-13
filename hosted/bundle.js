@@ -1,5 +1,9 @@
 'use strict';
 
+var tableHeaders = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+var months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 // Get the first day of the month by submitting the month and year, the day we get will be the first
 var getFirstDay = function getFirstDay(month, year) {
     // Month needs to be 0 indexed
@@ -11,38 +15,12 @@ var getDaysInMonth = function getDaysInMonth(month, year) {
     return 32 - new Date(year, month, 32).getDate();
 };
 
-// Populate table
-var populateTable = function populateTable(daysInMonth, firstDay) {
-    var date = 1;
-    var table = document.getElementById('calendar-body');
-    table.innerHTML = "";
+var tableObj = function tableObj(month, year, meals) {
+    var daysInMonth = getDaysInMonth(month, year);
+    var firstDay = getFirstDay(month, year);
+    month = month + 1;
+    debugger;
 
-    for (var i = 0; i < 6; i++) {
-        var row = document.createElement('tr');
-        var cell = void 0;
-
-        for (var j = 0; j < 7; j++) {
-            if (i === 0 && j < firstDay) {
-                cell = document.createElement('td');
-                cellText = document.createTextNode('');
-                cell.appendChild(cellText);
-                row.appendChild(cell);
-            } else if (data > daysInMonth) {
-                break;
-            } else {
-                cell = document.createElement('td');
-                cellText = document.createTextNode(date);
-                cell.appendChild(cellText);
-                row.appendChild(cell);
-                date++;
-            }
-        }
-
-        table.appendChild(row);
-    }
-};
-
-var tableObj = function tableObj(daysInMonth, firstDay) {
     var obj = [];
     var date = 1;
     for (var i = 0; i < 6; i++) {
@@ -50,11 +28,16 @@ var tableObj = function tableObj(daysInMonth, firstDay) {
         for (var j = 0; j < 7; j++) {
             var cell = {};
             if (i === 0 && j < firstDay) {
-                cell.date = 'IF: ' + i + ', ' + j;
+                cell.data = { date: 'x', meals: null };
             } else if (date > daysInMonth) {
                 break;
             } else {
-                cell.date = 'ELSE: ' + i + ', ' + j;
+                var formattedDate = month + '/' + date + '/' + year;
+                if (meals && meals[formattedDate]) {
+                    cell.data = { date: date, meals: meals[formattedDate] };
+                } else {
+                    cell.data = { date: date, meals: null };
+                }
                 date++;
             }
             week.push(cell);
@@ -64,15 +47,10 @@ var tableObj = function tableObj(daysInMonth, firstDay) {
     return obj;
 };
 
-var tableHeaders = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-var months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-var people = [{ "Id": 1, "First Name": "Anthony", "Last Name": "Nelson", "Age": 25 }, { "Id": 2, "First Name": "Helen", "Last Name": "Garcia", "Age": 32 }, { "Id": 3, "First Name": "John", "Last Name": "Williams", "Age": 48 }];
-
 var ShowCalendar = function ShowCalendar(data) {
-    var obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year));
-
+    debugger;
+    //let obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year), data.meals);
+    var obj = tableObj(data.month, data.year, data.meals);
     var table = React.createElement(
         'div',
         null,
@@ -119,22 +97,26 @@ var ShowCalendar = function ShowCalendar(data) {
                         'tr',
                         null,
                         week.map(function (day, index) {
+                            //debugger;
+                            var tdClicked = function tdClicked() {
+                                console.log(day.data.meals);
+                            };
+                            if (day.data && day.data.meals) {
+                                return React.createElement(
+                                    'td',
+                                    { className: 'clickable', onClick: tdClicked },
+                                    'Length: ',
+                                    day.data.meals.length
+                                );
+                            }
+
                             return React.createElement(
                                 'td',
-                                null,
-                                day.date
+                                { className: 'nomeals' },
+                                day.data.date
                             );
                         })
                     );
-                    // if(index % 7 == 0){
-                    //     return (<tr>
-                    //         {meal.date}
-                    //     </tr>)
-                    // }
-
-                    // return (<td>
-                    //     {meal.date}
-                    // </td>)
                 })
             )
         )
@@ -143,7 +125,7 @@ var ShowCalendar = function ShowCalendar(data) {
     return table;
 };
 
-var previousMonth = function previousMonth() {
+var previousMonth = function previousMonth(meals) {
     var monthHeader = $('#month-header').text().split(',');
     var currentMonth = monthHeader[0];
     var currentYear = parseInt(monthHeader[1].trim());
@@ -154,10 +136,10 @@ var previousMonth = function previousMonth() {
         currentYear -= 1;
     }
 
-    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear }), document.querySelector('#calendar'));
+    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear, meals: meals }), document.querySelector('#calendar'));
 };
 
-var nextMonth = function nextMonth() {
+var nextMonth = function nextMonth(meals) {
     var monthHeader = $('#month-header').text().split(',');
     var currentMonth = monthHeader[0];
     var currentYear = parseInt(monthHeader[1].trim());
@@ -168,7 +150,7 @@ var nextMonth = function nextMonth() {
         currentYear += 1;
     }
 
-    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear }), document.querySelector('#calendar'));
+    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear, meals: meals }), document.querySelector('#calendar'));
 };
 'use strict';
 
@@ -389,17 +371,38 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
         // Group the meals to their respective dates
         data.meals.forEach(function (element) {
             var thisDate = new Date(element.date);
+            var formattedDate = thisDate.getMonth() + 1 + '/' + thisDate.getUTCDate() + '/' + thisDate.getFullYear();
 
             // Since they have been sorted, we just check for a new date to move on to another day, if its the same as the current one, we add it
             if (currentDate == null || thisDate.getTime() != currentDate.getTime()) {
                 currentDate = thisDate;
-                dataObjects[thisDate] = [];
+                dataObjects[formattedDate] = [];
             }
 
-            dataObjects[thisDate].push(element);
+            dataObjects[formattedDate].push(element);
         });
 
         ReactDOM.render(React.createElement(MealList, { meals: dataObjects, csrf: csrf }), document.querySelector('#meals'));
+
+        ReactDOM.render(React.createElement(ShowCalendar, { month: 10, year: 2019, meals: dataObjects }), document.querySelector('#calendar'));
+
+        var prevBtn = document.getElementById('prev-month');
+        prevBtn.onclick = function () {
+            previousMonth(dataObjects);
+        };
+
+        var nextBtn = document.getElementById('next-month');
+        nextBtn.onclick = function () {
+            nextMonth(dataObjects);
+        };
+
+        // let tds = document.getElementsByClassName('clickable');
+        // for(let i = 0; i < tds.length; i++){
+        //     tds[i].onclick = function(){
+        //         console.log(this);
+        //     }
+        // }
+
 
         // Since not using react class, this is the only way to get button on clicks working
         var coll = document.getElementsByClassName('collapsible');
@@ -436,16 +439,6 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
 
 var setup = function setup(csrf) {
     ReactDOM.render(React.createElement(ShowCalendar, { month: 11, year: 2019 }), document.querySelector('#calendar'));
-
-    var prevBtn = document.getElementById('prev-month');
-    prevBtn.onclick = function () {
-        previousMonth();
-    };
-
-    var nextBtn = document.getElementById('next-month');
-    nextBtn.onclick = function () {
-        nextMonth();
-    };
 
     ReactDOM.render(React.createElement(MealForm, { csrf: csrf }), document.querySelector('#makeMeal'));
 

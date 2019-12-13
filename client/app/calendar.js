@@ -1,66 +1,3 @@
-// Get the first day of the month by submitting the month and year, the day we get will be the first
-const getFirstDay = (month, year) => { // Month needs to be 0 indexed
-    return (new Date(year, month)).getDay();   
-}
-
-// Get the last day of the month. If we send 32nd day of Jan we get Feb 1st minus 32 minus that 31 of Jan
-const getDaysInMonth = (month, year) => {
-    return 32 - new Date(year, month, 32).getDate();
-}
-
-// Populate table
-const populateTable = (daysInMonth, firstDay) => {
-    let date = 1;
-    let table = document.getElementById('calendar-body');
-    table.innerHTML = "";
-
-    for(let i = 0; i < 6; i++){
-        let row = document.createElement('tr');
-        let cell;
-
-        for(let j = 0; j < 7; j++){
-            if(i === 0 && j < firstDay){
-                cell = document.createElement('td');
-                cellText = document.createTextNode('');
-                cell.appendChild(cellText);
-                row.appendChild(cell);   
-            }else if(data > daysInMonth){
-                break;
-            }else{
-                cell = document.createElement('td');
-                cellText = document.createTextNode(date);
-                cell.appendChild(cellText);
-                row.appendChild(cell);
-                date++;
-            }
-        }
-
-        table.appendChild(row);
-    }
-}
-
-const tableObj = (daysInMonth, firstDay) => {
-    let obj = [];
-    let date = 1;
-    for(let i = 0; i < 6; i++){
-        let week = [];
-        for(let j = 0; j < 7; j++) {
-            let cell = {}
-            if(i === 0 && j < firstDay){
-                cell.date = `IF: ${i}, ${j}`;
-            }else if(date > daysInMonth){
-                break;
-            }else{
-                cell.date = `ELSE: ${i}, ${j}`;
-                date++;
-            }
-            week.push(cell);
-        }
-        obj.push(week);
-    }
-    return obj;
-}
-
 const tableHeaders = [
     'Sunday',
     'Monday',
@@ -84,17 +21,54 @@ const months = [
     'October',
     'November',
     'December'
-]
+];
 
-var people = [
-    { "Id": 1, "First Name": "Anthony", "Last Name": "Nelson", "Age": 25 },
-    { "Id": 2, "First Name": "Helen", "Last Name": "Garcia", "Age": 32 },
-    { "Id": 3, "First Name": "John", "Last Name": "Williams", "Age": 48 }
-  ];
+// Get the first day of the month by submitting the month and year, the day we get will be the first
+const getFirstDay = (month, year) => { // Month needs to be 0 indexed
+    return (new Date(year, month)).getDay();   
+}
+
+// Get the last day of the month. If we send 32nd day of Jan we get Feb 1st minus 32 minus that 31 of Jan
+const getDaysInMonth = (month, year) => {
+    return 32 - new Date(year, month, 32).getDate();
+}
+
+const tableObj = (month, year, meals) => {
+    let daysInMonth = getDaysInMonth(month, year)
+    let firstDay = getFirstDay(month, year);
+    month = month + 1;
+    debugger;
+    
+    let obj = [];
+    let date = 1;
+    for(let i = 0; i < 6; i++){
+        let week = [];
+        for(let j = 0; j < 7; j++) {
+            let cell = {}
+            if(i === 0 && j < firstDay){
+                cell.data = {date: 'x', meals: null};
+            }else if(date > daysInMonth){
+                break;
+            }else{
+                let formattedDate = `${month}/${date}/${year}`;
+                if(meals && meals[formattedDate]){
+                    cell.data = {date: date, meals: meals[formattedDate]};
+                }else{
+                    cell.data = {date: date, meals: null};
+                }
+                date++;
+            }
+            week.push(cell);
+        }
+        obj.push(week);
+    }
+    return obj;
+}
 
 const ShowCalendar = (data) => {
-    let obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year));
-
+    debugger;
+    //let obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year), data.meals);
+    let obj = tableObj(data.month, data.year, data.meals)
     let table = <div>
         <button id='prev-month'>&larr;</button>
         <h2 id='month-header'>{months[data.month]}, {data.year}</h2>
@@ -114,22 +88,21 @@ const ShowCalendar = (data) => {
                 return (
                 <tr>
                     {week.map((day, index) => {
+                        //debugger;
+                        const tdClicked = () => {
+                            console.log(day.data.meals);
+                        }
+                        if(day.data && day.data.meals){
+                            return(<td className='clickable' onClick={tdClicked}>Length: {day.data.meals.length}</td>)
+                        }
+
                         return (
-                        <td>{day.date}</td>
+                        <td className='nomeals'>{day.data.date}</td>
                         )
                     })}
 
                 </tr>
                 )
-                // if(index % 7 == 0){
-                //     return (<tr>
-                //         {meal.date}
-                //     </tr>)
-                // }
-
-                // return (<td>
-                //     {meal.date}
-                // </td>)
             })}
             </tbody>
         </table>
@@ -138,7 +111,7 @@ const ShowCalendar = (data) => {
     return table;
 }
 
-const previousMonth = () => {
+const previousMonth = (meals) => {
     let monthHeader = $('#month-header').text().split(',')
     let currentMonth = monthHeader[0];
     let currentYear = parseInt(monthHeader[1].trim());
@@ -151,12 +124,12 @@ const previousMonth = () => {
     }
 
     ReactDOM.render(
-        <ShowCalendar month={newMonth} year={currentYear}/>, document.querySelector('#calendar')
+        <ShowCalendar month={newMonth} year={currentYear} meals={meals}/>, document.querySelector('#calendar')
     );
 
 }
 
-const nextMonth = () => {
+const nextMonth = (meals) => {
     let monthHeader = $('#month-header').text().split(',')
     let currentMonth = monthHeader[0];
     let currentYear = parseInt(monthHeader[1].trim());
@@ -169,7 +142,7 @@ const nextMonth = () => {
     }
 
     ReactDOM.render(
-        <ShowCalendar month={newMonth} year={currentYear}/>, document.querySelector('#calendar')
+        <ShowCalendar month={newMonth} year={currentYear} meals={meals}/>, document.querySelector('#calendar')
     );
 
 }

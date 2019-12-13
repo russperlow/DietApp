@@ -331,3 +331,9 @@ table{
     width: 100%;
     text-align: center;
 }
+.clickable{
+    color: green;
+}
+.nomeals{
+    color: grey;
+}
