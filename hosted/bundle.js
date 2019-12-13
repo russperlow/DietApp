@@ -142,6 +142,34 @@ var ShowCalendar = function ShowCalendar(data) {
 
     return table;
 };
+
+var previousMonth = function previousMonth() {
+    var monthHeader = $('#month-header').text().split(',');
+    var currentMonth = monthHeader[0];
+    var currentYear = parseInt(monthHeader[1].trim());
+    var newMonth = months.indexOf(currentMonth) - 1;
+
+    if (newMonth < 0) {
+        newMonth = 11;
+        currentYear -= 1;
+    }
+
+    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear }), document.querySelector('#calendar'));
+};
+
+var nextMonth = function nextMonth() {
+    var monthHeader = $('#month-header').text().split(',');
+    var currentMonth = monthHeader[0];
+    var currentYear = parseInt(monthHeader[1].trim());
+    var newMonth = months.indexOf(currentMonth) + 1;
+
+    if (newMonth > 11) {
+        newMonth = 0;
+        currentYear += 1;
+    }
+
+    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear }), document.querySelector('#calendar'));
+};
 'use strict';
 
 var handleMeal = function handleMeal(e) {
@@ -408,6 +436,16 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
 
 var setup = function setup(csrf) {
     ReactDOM.render(React.createElement(ShowCalendar, { month: 11, year: 2019 }), document.querySelector('#calendar'));
+
+    var prevBtn = document.getElementById('prev-month');
+    prevBtn.onclick = function () {
+        previousMonth();
+    };
+
+    var nextBtn = document.getElementById('next-month');
+    nextBtn.onclick = function () {
+        nextMonth();
+    };
 
     ReactDOM.render(React.createElement(MealForm, { csrf: csrf }), document.querySelector('#makeMeal'));
 

@@ -137,3 +137,39 @@ const ShowCalendar = (data) => {
 
     return table;
 }
+
+const previousMonth = () => {
+    let monthHeader = $('#month-header').text().split(',')
+    let currentMonth = monthHeader[0];
+    let currentYear = parseInt(monthHeader[1].trim());
+    let newMonth = months.indexOf(currentMonth) - 1;
+
+
+    if(newMonth < 0){
+        newMonth = 11;
+        currentYear -=1;
+    }
+
+    ReactDOM.render(
+        <ShowCalendar month={newMonth} year={currentYear}/>, document.querySelector('#calendar')
+    );
+
+}
+
+const nextMonth = () => {
+    let monthHeader = $('#month-header').text().split(',')
+    let currentMonth = monthHeader[0];
+    let currentYear = parseInt(monthHeader[1].trim());
+    let newMonth = months.indexOf(currentMonth) + 1;
+
+
+    if(newMonth > 11){
+        newMonth = 0;
+        currentYear += 1;
+    }
+
+    ReactDOM.render(
+        <ShowCalendar month={newMonth} year={currentYear}/>, document.querySelector('#calendar')
+    );
+
+}

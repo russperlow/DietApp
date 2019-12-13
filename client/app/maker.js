@@ -198,6 +198,17 @@ const setup = function(csrf){
         <ShowCalendar month={11} year={2019}/>, document.querySelector('#calendar')
     );
 
+    let prevBtn = document.getElementById('prev-month');
+    prevBtn.onclick = function(){
+        previousMonth();
+    }
+
+    let nextBtn = document.getElementById('next-month');
+    nextBtn.onclick = function(){
+        nextMonth();
+    }
+
+
     ReactDOM.render(
         <MealForm csrf={csrf}/>, document.querySelector('#makeMeal')
     );
