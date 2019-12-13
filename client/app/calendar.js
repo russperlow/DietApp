@@ -52,7 +52,7 @@ const tableObj = (month, year, meals) => {
             }else{
                 let formattedDate = `${month}/${date}/${year}`;
                 if(meals && meals[formattedDate]){
-                    cell.data = {date: date, meals: meals[formattedDate]};
+                    cell.data = {date: date, meals: meals[formattedDate], formattedDate: formattedDate};
                 }else{
                     cell.data = {date: date, meals: null};
                 }
@@ -65,7 +65,7 @@ const tableObj = (month, year, meals) => {
     return obj;
 }
 
-const ShowCalendar = (data) => {
+const ShowCalendar = (data, csrf) => {
     debugger;
     //let obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year), data.meals);
     let obj = tableObj(data.month, data.year, data.meals)
@@ -93,6 +93,10 @@ const ShowCalendar = (data) => {
                             $('.highlighted').removeClass('highlighted');
 
                             e.target.classList.add('highlighted');
+
+                            ReactDOM.render(
+                                <MealDisplay meals={day.data.meals} date={day.data.formattedDate} csrf={csrf}/>, document.querySelector('#meals')
+                            )
                             console.log(e);
                         }
                         if(day.data && day.data.meals){

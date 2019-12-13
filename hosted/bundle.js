@@ -34,7 +34,7 @@ var tableObj = function tableObj(month, year, meals) {
             } else {
                 var formattedDate = month + '/' + date + '/' + year;
                 if (meals && meals[formattedDate]) {
-                    cell.data = { date: date, meals: meals[formattedDate] };
+                    cell.data = { date: date, meals: meals[formattedDate], formattedDate: formattedDate };
                 } else {
                     cell.data = { date: date, meals: null };
                 }
@@ -47,7 +47,7 @@ var tableObj = function tableObj(month, year, meals) {
     return obj;
 };
 
-var ShowCalendar = function ShowCalendar(data) {
+var ShowCalendar = function ShowCalendar(data, csrf) {
     debugger;
     //let obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year), data.meals);
     var obj = tableObj(data.month, data.year, data.meals);
@@ -105,6 +105,8 @@ var ShowCalendar = function ShowCalendar(data) {
                                 $('.highlighted').removeClass('highlighted');
 
                                 e.target.classList.add('highlighted');
+
+                                ReactDOM.render(React.createElement(MealDisplay, { meals: day.data.meals, date: day.data.formattedDate, csrf: csrf }), document.querySelector('#meals'));
                                 console.log(e);
                             };
                             if (day.data && day.data.meals) {
@@ -282,6 +284,58 @@ var MealForm = function MealForm(props) {
     );
 };
 
+var MealDisplay = function MealDisplay(obj, csrf) {
+    var formattedDate = obj.formattedDate;
+    var meals = obj.meals;
+    var display = React.createElement(
+        'div',
+        null,
+        React.createElement(
+            'h3',
+            null,
+            formattedDate
+        ),
+        meals.map(function (meal, index) {
+            var srcVal = '/assets/img/' + meal.time + '.png';
+            return React.createElement(
+                'div',
+                { className: 'meal', key: meal._id },
+                React.createElement('img', { src: srcVal, alt: 'meal image', className: 'mealImg' }),
+                React.createElement(
+                    'h3',
+                    { className: 'time' },
+                    meal.time
+                ),
+                React.createElement(
+                    'h3',
+                    { className: 'mealName' },
+                    'Food: ',
+                    meal.food
+                ),
+                React.createElement(
+                    'h3',
+                    { className: 'mealCalories' },
+                    'Calories: ',
+                    meal.calories
+                ),
+                React.createElement(
+                    'form',
+                    { id: 'deleteMeal',
+                        onSubmit: handleDelete,
+                        name: 'deleteMeal',
+                        action: '/deleteMeal',
+                        method: 'DELETE' },
+                    React.createElement('input', { type: 'hidden', name: '_id', value: meal._id }),
+                    React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: csrf }),
+                    React.createElement('input', { className: 'makeMealDelete', type: 'submit', value: 'Delete' })
+                )
+            );
+        })
+    );
+
+    return display;
+};
+
 var MealList = function MealList(props) {
     if (props.meals.length === 0) {
         return React.createElement(
@@ -393,7 +447,7 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
         //     <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
         // );
 
-        ReactDOM.render(React.createElement(ShowCalendar, { month: 10, year: 2019, meals: dataObjects }), document.querySelector('#calendar'));
+        ReactDOM.render(React.createElement(ShowCalendar, { month: 10, year: 2019, meals: dataObjects, csrf: csrf }), document.querySelector('#calendar'));
 
         var prevBtn = document.getElementById('prev-month');
         prevBtn.onclick = function () {

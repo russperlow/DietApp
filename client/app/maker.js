@@ -71,6 +71,39 @@ const MealForm = (props) => {
     );
 };
 
+const MealDisplay = (obj, csrf) => {
+    let formattedDate = obj.formattedDate;
+    let meals = obj.meals;
+    let display = <div>
+        <h3>{formattedDate}</h3>
+        {meals.map((meal, index) => {
+                let srcVal = `/assets/img/${meal.time}.png`;
+                return(
+                    <div className='meal' key={meal._id}>
+                        <img src={srcVal} alt ='meal image' className='mealImg'/>
+                        <h3 className='time'>{meal.time}</h3>
+                        <h3 className='mealName'>Food: {meal.food}</h3>
+                        <h3 className='mealCalories'>Calories: {meal.calories}</h3>
+
+                        <form id='deleteMeal'
+                            onSubmit={handleDelete}
+                            name='deleteMeal'
+                            action='/deleteMeal'
+                            method='DELETE'>
+
+                                <input type='hidden' name='_id' value={meal._id}/>
+                                <input type='hidden' id='token' name='_csrf' value={csrf}/>
+                                <input className='makeMealDelete' type='submit' value='Delete'/>
+
+                        </form>
+                    </div>
+                )
+            })}
+    </div>
+
+    return(display);
+};
+
 const MealList = function(props){
     if(props.meals.length === 0){
         return(
@@ -161,7 +194,7 @@ const loadmealsFromServer = (csrf) => {
         // );
 
         ReactDOM.render(
-            <ShowCalendar month={10} year={2019} meals={dataObjects}/>, document.querySelector('#calendar')
+            <ShowCalendar month={10} year={2019} meals={dataObjects} csrf={csrf}/>, document.querySelector('#calendar')
         );
     
         let prevBtn = document.getElementById('prev-month');
