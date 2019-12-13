@@ -337,3 +337,20 @@ table{
 .nomeals{
     color: grey;
 }
+.arrowBtn{
+    background-color: #FAB735;
+    border-style: solid;
+    border-width: 1px;
+    margin-right: 10%;
+    margin-left: 10%;
+    padding: 0px 10px 2px;
+    font-size: 30px;
+    font-weight: bolder;
+}
+.arrowBtn:hover{
+    color: #213037;
+    transition: background-color 0.4s ease;
+    background-color: #26704F;
+    border-color: #FAB735;
+    color: white;
+}

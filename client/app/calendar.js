@@ -70,9 +70,10 @@ const ShowCalendar = (data) => {
     //let obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year), data.meals);
     let obj = tableObj(data.month, data.year, data.meals)
     let table = <div>
-        <button id='prev-month'>&larr;</button>
-        <h2 id='month-header'>{months[data.month]}, {data.year}</h2>
-        <button id='next-month'>&rarr;</button>
+        <h2 id='month-header'><button id='prev-month' className='arrowBtn'>&larr;</button>
+        {months[data.month]}, {data.year}
+        <button id='next-month' className='arrowBtn'>&rarr;</button>
+        </h2>
         <table>
             <thead>
                 <tr>

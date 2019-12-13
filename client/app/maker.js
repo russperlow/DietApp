@@ -156,9 +156,9 @@ const loadmealsFromServer = (csrf) => {
             dataObjects[formattedDate].push(element);
         });
 
-        ReactDOM.render(
-            <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
-        );
+        // ReactDOM.render(
+        //     <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
+        // );
 
         ReactDOM.render(
             <ShowCalendar month={10} year={2019} meals={dataObjects}/>, document.querySelector('#calendar')
@@ -172,15 +172,7 @@ const loadmealsFromServer = (csrf) => {
         let nextBtn = document.getElementById('next-month');
         nextBtn.onclick = function(){
             nextMonth(dataObjects);
-        }
-
-        // let tds = document.getElementsByClassName('clickable');
-        // for(let i = 0; i < tds.length; i++){
-        //     tds[i].onclick = function(){
-        //         console.log(this);
-        //     }
-        // }
-        
+        }        
 
         // Since not using react class, this is the only way to get button on clicks working
         let coll = document.getElementsByClassName('collapsible');
@@ -227,9 +219,9 @@ const setup = function(csrf){
 
     document.getElementById('showhidemealForm').onclick = function(){showHideMealForm(this);};
 
-    ReactDOM.render(
-        <MealList meals={[]} csrf={csrf}/>, document.querySelector('#meals')
-    );
+    // ReactDOM.render(
+    //     <MealList meals={[]} csrf={csrf}/>, document.querySelector('#meals')
+    // );
 
     loadmealsFromServer(csrf);
 };

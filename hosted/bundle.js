@@ -55,21 +55,21 @@ var ShowCalendar = function ShowCalendar(data) {
         'div',
         null,
         React.createElement(
-            'button',
-            { id: 'prev-month' },
-            '\u2190'
-        ),
-        React.createElement(
             'h2',
             { id: 'month-header' },
+            React.createElement(
+                'button',
+                { id: 'prev-month', className: 'arrowBtn' },
+                '\u2190'
+            ),
             months[data.month],
             ', ',
-            data.year
-        ),
-        React.createElement(
-            'button',
-            { id: 'next-month' },
-            '\u2192'
+            data.year,
+            React.createElement(
+                'button',
+                { id: 'next-month', className: 'arrowBtn' },
+                '\u2192'
+            )
         ),
         React.createElement(
             'table',
@@ -382,7 +382,9 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
             dataObjects[formattedDate].push(element);
         });
 
-        ReactDOM.render(React.createElement(MealList, { meals: dataObjects, csrf: csrf }), document.querySelector('#meals'));
+        // ReactDOM.render(
+        //     <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
+        // );
 
         ReactDOM.render(React.createElement(ShowCalendar, { month: 10, year: 2019, meals: dataObjects }), document.querySelector('#calendar'));
 
@@ -395,14 +397,6 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
         nextBtn.onclick = function () {
             nextMonth(dataObjects);
         };
-
-        // let tds = document.getElementsByClassName('clickable');
-        // for(let i = 0; i < tds.length; i++){
-        //     tds[i].onclick = function(){
-        //         console.log(this);
-        //     }
-        // }
-
 
         // Since not using react class, this is the only way to get button on clicks working
         var coll = document.getElementsByClassName('collapsible');
@@ -446,7 +440,9 @@ var setup = function setup(csrf) {
         showHideMealForm(this);
     };
 
-    ReactDOM.render(React.createElement(MealList, { meals: [], csrf: csrf }), document.querySelector('#meals'));
+    // ReactDOM.render(
+    //     <MealList meals={[]} csrf={csrf}/>, document.querySelector('#meals')
+    // );
 
     loadmealsFromServer(csrf);
 };
