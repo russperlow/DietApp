@@ -55,16 +55,20 @@ var ShowCalendar = function ShowCalendar(data) {
         'div',
         null,
         React.createElement(
-            'h2',
-            { id: 'month-header' },
+            'div',
+            { id: 'month-div' },
             React.createElement(
                 'button',
                 { id: 'prev-month', className: 'arrowBtn' },
                 '\u2190'
             ),
-            months[data.month],
-            ', ',
-            data.year,
+            React.createElement(
+                'h2',
+                { id: 'month-header' },
+                months[data.month],
+                ', ',
+                data.year
+            ),
             React.createElement(
                 'button',
                 { id: 'next-month', className: 'arrowBtn' },
@@ -140,6 +144,7 @@ var previousMonth = function previousMonth(meals) {
 };
 
 var nextMonth = function nextMonth(meals) {
+    debugger;
     var monthHeader = $('#month-header').text().split(',');
     var currentMonth = monthHeader[0];
     var currentYear = parseInt(monthHeader[1].trim());

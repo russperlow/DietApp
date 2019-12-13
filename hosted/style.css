@@ -354,3 +354,6 @@ table{
     border-color: #FAB735;
     color: white;
 }
+#month-div{
+    display: flex;
+}
