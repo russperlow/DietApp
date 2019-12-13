@@ -19,7 +19,6 @@ var tableObj = function tableObj(month, year, meals) {
     var daysInMonth = getDaysInMonth(month, year);
     var firstDay = getFirstDay(month, year);
     month = month + 1;
-    debugger;
 
     var obj = [];
     var date = 1;
@@ -28,7 +27,7 @@ var tableObj = function tableObj(month, year, meals) {
         for (var j = 0; j < 7; j++) {
             var cell = {};
             if (i === 0 && j < firstDay) {
-                cell.data = { date: 'x', meals: null };
+                cell.data = { date: '', meals: null };
             } else if (date > daysInMonth) {
                 break;
             } else {
@@ -47,10 +46,9 @@ var tableObj = function tableObj(month, year, meals) {
     return obj;
 };
 
-var ShowCalendar = function ShowCalendar(data, csrf) {
-    debugger;
-    //let obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year), data.meals);
+var ShowCalendar = function ShowCalendar(data) {
     var obj = tableObj(data.month, data.year, data.meals);
+    var csrf = data.csrf;
     var table = React.createElement(
         'div',
         null,
@@ -105,7 +103,7 @@ var ShowCalendar = function ShowCalendar(data, csrf) {
                                 $('.highlighted').removeClass('highlighted');
 
                                 e.target.classList.add('highlighted');
-
+                                debugger;
                                 ReactDOM.render(React.createElement(MealDisplay, { meals: day.data.meals, date: day.data.formattedDate, csrf: csrf }), document.querySelector('#meals'));
                                 console.log(e);
                             };
@@ -181,6 +179,7 @@ var handleMeal = function handleMeal(e) {
 
 var handleDelete = function handleDelete(e) {
     e.preventDefault();
+    debugger;
 
     $('mealMessage').animate({ width: 'hide' }, 350);
 
@@ -284,7 +283,7 @@ var MealForm = function MealForm(props) {
     );
 };
 
-var MealDisplay = function MealDisplay(obj, csrf) {
+var MealDisplay = function MealDisplay(obj) {
     var formattedDate = obj.formattedDate;
     var meals = obj.meals;
     var display = React.createElement(
@@ -297,6 +296,7 @@ var MealDisplay = function MealDisplay(obj, csrf) {
         ),
         meals.map(function (meal, index) {
             var srcVal = '/assets/img/' + meal.time + '.png';
+            debugger;
             return React.createElement(
                 'div',
                 { className: 'meal', key: meal._id },
@@ -326,7 +326,7 @@ var MealDisplay = function MealDisplay(obj, csrf) {
                         action: '/deleteMeal',
                         method: 'DELETE' },
                     React.createElement('input', { type: 'hidden', name: '_id', value: meal._id }),
-                    React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: csrf }),
+                    React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: obj.csrf }),
                     React.createElement('input', { className: 'makeMealDelete', type: 'submit', value: 'Delete' })
                 )
             );
@@ -493,7 +493,7 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
 };
 
 var setup = function setup(csrf) {
-    ReactDOM.render(React.createElement(ShowCalendar, { month: 11, year: 2019 }), document.querySelector('#calendar'));
+    ReactDOM.render(React.createElement(ShowCalendar, { month: 11, year: 2019, csrf: csrf }), document.querySelector('#calendar'));
 
     ReactDOM.render(React.createElement(MealForm, { csrf: csrf }), document.querySelector('#makeMeal'));
 

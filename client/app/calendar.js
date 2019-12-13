@@ -37,7 +37,6 @@ const tableObj = (month, year, meals) => {
     let daysInMonth = getDaysInMonth(month, year)
     let firstDay = getFirstDay(month, year);
     month = month + 1;
-    debugger;
     
     let obj = [];
     let date = 1;
@@ -46,7 +45,7 @@ const tableObj = (month, year, meals) => {
         for(let j = 0; j < 7; j++) {
             let cell = {}
             if(i === 0 && j < firstDay){
-                cell.data = {date: 'x', meals: null};
+                cell.data = {date: '', meals: null};
             }else if(date > daysInMonth){
                 break;
             }else{
@@ -65,10 +64,9 @@ const tableObj = (month, year, meals) => {
     return obj;
 }
 
-const ShowCalendar = (data, csrf) => {
-    debugger;
-    //let obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year), data.meals);
+const ShowCalendar = (data) => {
     let obj = tableObj(data.month, data.year, data.meals)
+    const csrf = data.csrf;
     let table = <div>
         <div id='month-div'><button id='prev-month' className='arrowBtn'>&larr;</button>
         <h2 id='month-header'>{months[data.month]}, {data.year}</h2>
@@ -93,7 +91,7 @@ const ShowCalendar = (data, csrf) => {
                             $('.highlighted').removeClass('highlighted');
 
                             e.target.classList.add('highlighted');
-
+                            debugger;
                             ReactDOM.render(
                                 <MealDisplay meals={day.data.meals} date={day.data.formattedDate} csrf={csrf}/>, document.querySelector('#meals')
                             )
