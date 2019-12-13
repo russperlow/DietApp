@@ -195,6 +195,10 @@ const loadmealsFromServer = (csrf) => {
 
 const setup = function(csrf){
     ReactDOM.render(
+        <ShowCalendar month={11} year={2019}/>, document.querySelector('#calendar')
+    );
+
+    ReactDOM.render(
         <MealForm csrf={csrf}/>, document.querySelector('#makeMeal')
     );
 
@@ -215,4 +219,6 @@ const getToken = () => {
 
 $(document).ready(function(){
     getToken();
+    //showCalendar(11, 2019);
+    //makeCalendar();
 });

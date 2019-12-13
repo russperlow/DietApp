@@ -1,5 +1,149 @@
 'use strict';
 
+// Get the first day of the month by submitting the month and year, the day we get will be the first
+var getFirstDay = function getFirstDay(month, year) {
+    // Month needs to be 0 indexed
+    return new Date(year, month).getDay();
+};
+
+// Get the last day of the month. If we send 32nd day of Jan we get Feb 1st minus 32 minus that 31 of Jan
+var getDaysInMonth = function getDaysInMonth(month, year) {
+    return 32 - new Date(year, month, 32).getDate();
+};
+
+// Populate table
+var populateTable = function populateTable(daysInMonth, firstDay) {
+    var date = 1;
+    var table = document.getElementById('calendar-body');
+    table.innerHTML = "";
+
+    for (var i = 0; i < 6; i++) {
+        var row = document.createElement('tr');
+        var cell = void 0;
+
+        for (var j = 0; j < 7; j++) {
+            if (i === 0 && j < firstDay) {
+                cell = document.createElement('td');
+                cellText = document.createTextNode('');
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+            } else if (data > daysInMonth) {
+                break;
+            } else {
+                cell = document.createElement('td');
+                cellText = document.createTextNode(date);
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+                date++;
+            }
+        }
+
+        table.appendChild(row);
+    }
+};
+
+var tableObj = function tableObj(daysInMonth, firstDay) {
+    var obj = [];
+    var date = 1;
+    for (var i = 0; i < 6; i++) {
+        var week = [];
+        for (var j = 0; j < 7; j++) {
+            var cell = {};
+            if (i === 0 && j < firstDay) {
+                cell.date = 'IF: ' + i + ', ' + j;
+            } else if (date > daysInMonth) {
+                break;
+            } else {
+                cell.date = 'ELSE: ' + i + ', ' + j;
+                date++;
+            }
+            week.push(cell);
+        }
+        obj.push(week);
+    }
+    return obj;
+};
+
+var tableHeaders = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+var months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+var people = [{ "Id": 1, "First Name": "Anthony", "Last Name": "Nelson", "Age": 25 }, { "Id": 2, "First Name": "Helen", "Last Name": "Garcia", "Age": 32 }, { "Id": 3, "First Name": "John", "Last Name": "Williams", "Age": 48 }];
+
+var ShowCalendar = function ShowCalendar(data) {
+    var obj = tableObj(getDaysInMonth(data.month, data.year), getFirstDay(data.month, data.year));
+
+    var table = React.createElement(
+        'div',
+        null,
+        React.createElement(
+            'button',
+            { id: 'prev-month' },
+            '\u2190'
+        ),
+        React.createElement(
+            'h2',
+            { id: 'month-header' },
+            months[data.month],
+            ', ',
+            data.year
+        ),
+        React.createElement(
+            'button',
+            { id: 'next-month' },
+            '\u2192'
+        ),
+        React.createElement(
+            'table',
+            null,
+            React.createElement(
+                'thead',
+                null,
+                React.createElement(
+                    'tr',
+                    null,
+                    tableHeaders.map(function (day, index) {
+                        return React.createElement(
+                            'th',
+                            null,
+                            day
+                        );
+                    })
+                )
+            ),
+            React.createElement(
+                'tbody',
+                null,
+                obj.map(function (week, index) {
+                    return React.createElement(
+                        'tr',
+                        null,
+                        week.map(function (day, index) {
+                            return React.createElement(
+                                'td',
+                                null,
+                                day.date
+                            );
+                        })
+                    );
+                    // if(index % 7 == 0){
+                    //     return (<tr>
+                    //         {meal.date}
+                    //     </tr>)
+                    // }
+
+                    // return (<td>
+                    //     {meal.date}
+                    // </td>)
+                })
+            )
+        )
+    );
+
+    return table;
+};
+'use strict';
+
 var handleMeal = function handleMeal(e) {
     e.preventDefault();
 
@@ -263,6 +407,8 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
 };
 
 var setup = function setup(csrf) {
+    ReactDOM.render(React.createElement(ShowCalendar, { month: 11, year: 2019 }), document.querySelector('#calendar'));
+
     ReactDOM.render(React.createElement(MealForm, { csrf: csrf }), document.querySelector('#makeMeal'));
 
     document.getElementById('showhidemealForm').onclick = function () {
@@ -282,6 +428,8 @@ var getToken = function getToken() {
 
 $(document).ready(function () {
     getToken();
+    //showCalendar(11, 2019);
+    //makeCalendar();
 });
 'use strict';
 

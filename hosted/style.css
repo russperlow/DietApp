@@ -323,3 +323,11 @@ h3.mealName {
 .columnrow-active{
     height: 27%;
 }
+table{
+    width: 100%;
+    text-align: center;
+}
+#month-header{
+    width: 100%;
+    text-align: center;
+}
