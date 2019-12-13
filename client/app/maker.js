@@ -234,6 +234,4 @@ const getToken = () => {
 
 $(document).ready(function(){
     getToken();
-    //showCalendar(11, 2019);
-    //makeCalendar();
 });

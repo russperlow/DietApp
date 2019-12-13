@@ -89,9 +89,11 @@ const ShowCalendar = (data) => {
                 return (
                 <tr>
                     {week.map((day, index) => {
-                        //debugger;
-                        const tdClicked = () => {
-                            console.log(day.data.meals);
+                        const tdClicked = (e) => {
+                            $('.highlighted').removeClass('highlighted');
+
+                            e.target.classList.add('highlighted');
+                            console.log(e);
                         }
                         if(day.data && day.data.meals){
                             return(<td className='clickable' onClick={tdClicked}>Length: {day.data.meals.length}</td>)

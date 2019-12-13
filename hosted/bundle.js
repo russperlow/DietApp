@@ -101,9 +101,11 @@ var ShowCalendar = function ShowCalendar(data) {
                         'tr',
                         null,
                         week.map(function (day, index) {
-                            //debugger;
-                            var tdClicked = function tdClicked() {
-                                console.log(day.data.meals);
+                            var tdClicked = function tdClicked(e) {
+                                $('.highlighted').removeClass('highlighted');
+
+                                e.target.classList.add('highlighted');
+                                console.log(e);
                             };
                             if (day.data && day.data.meals) {
                                 return React.createElement(
@@ -460,8 +462,6 @@ var getToken = function getToken() {
 
 $(document).ready(function () {
     getToken();
-    //showCalendar(11, 2019);
-    //makeCalendar();
 });
 'use strict';
 

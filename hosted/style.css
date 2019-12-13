@@ -357,3 +357,7 @@ table{
 #month-div{
     display: flex;
 }
+.highlighted{
+    background-color: #FAB735;
+    color: #26704F;
+}
