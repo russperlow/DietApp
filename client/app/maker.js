@@ -73,8 +73,9 @@ const MealForm = (props) => {
 };
 
 const MealDisplay = (obj) => {
-    let formattedDate = obj.formattedDate;
+    let formattedDate = obj.date;
     let meals = obj.meals;
+    debugger;
     let display = <div>
         <h3>{formattedDate}</h3>
         {meals.map((meal, index) => {
@@ -201,12 +202,12 @@ const loadmealsFromServer = (csrf) => {
     
         let prevBtn = document.getElementById('prev-month');
         prevBtn.onclick = function(){
-            previousMonth(dataObjects);
+            previousMonth(dataObjects, csrf);
         }
     
         let nextBtn = document.getElementById('next-month');
         nextBtn.onclick = function(){
-            nextMonth(dataObjects);
+            nextMonth(dataObjects, csrf);
         }        
 
         // Since not using react class, this is the only way to get button on clicks working
@@ -240,7 +241,14 @@ const loadmealsFromServer = (csrf) => {
                 }
             };
         }
+
     }); 
+
+    try{
+        document.getElementsByClassName('.highlighted')[0].click();
+    }catch(e){
+
+    }
 };
 
 const setup = function(csrf){

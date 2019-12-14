@@ -116,12 +116,11 @@ const ShowCalendar = (data) => {
     return table;
 }
 
-const previousMonth = (meals) => {
+const previousMonth = (meals, csrf) => {
     let monthHeader = $('#month-header').text().split(',')
     let currentMonth = monthHeader[0];
     let currentYear = parseInt(monthHeader[1].trim());
     let newMonth = months.indexOf(currentMonth) - 1;
-
 
     if(newMonth < 0){
         newMonth = 11;
@@ -129,18 +128,17 @@ const previousMonth = (meals) => {
     }
 
     ReactDOM.render(
-        <ShowCalendar month={newMonth} year={currentYear} meals={meals}/>, document.querySelector('#calendar')
+        <ShowCalendar month={newMonth} year={currentYear} meals={meals} csrf={csrf}/>, document.querySelector('#calendar')
     );
 
 }
 
-const nextMonth = (meals) => {
+const nextMonth = (meals, csrf) => {
     debugger;
     let monthHeader = $('#month-header').text().split(',')
     let currentMonth = monthHeader[0];
     let currentYear = parseInt(monthHeader[1].trim());
     let newMonth = months.indexOf(currentMonth) + 1;
-
 
     if(newMonth > 11){
         newMonth = 0;
@@ -148,7 +146,7 @@ const nextMonth = (meals) => {
     }
 
     ReactDOM.render(
-        <ShowCalendar month={newMonth} year={currentYear} meals={meals}/>, document.querySelector('#calendar')
+        <ShowCalendar month={newMonth} year={currentYear} meals={meals} csrf={csrf}/>, document.querySelector('#calendar')
     );
 
 }

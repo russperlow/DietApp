@@ -131,7 +131,7 @@ var ShowCalendar = function ShowCalendar(data) {
     return table;
 };
 
-var previousMonth = function previousMonth(meals) {
+var previousMonth = function previousMonth(meals, csrf) {
     var monthHeader = $('#month-header').text().split(',');
     var currentMonth = monthHeader[0];
     var currentYear = parseInt(monthHeader[1].trim());
@@ -142,10 +142,10 @@ var previousMonth = function previousMonth(meals) {
         currentYear -= 1;
     }
 
-    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear, meals: meals }), document.querySelector('#calendar'));
+    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear, meals: meals, csrf: csrf }), document.querySelector('#calendar'));
 };
 
-var nextMonth = function nextMonth(meals) {
+var nextMonth = function nextMonth(meals, csrf) {
     debugger;
     var monthHeader = $('#month-header').text().split(',');
     var currentMonth = monthHeader[0];
@@ -157,7 +157,7 @@ var nextMonth = function nextMonth(meals) {
         currentYear += 1;
     }
 
-    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear, meals: meals }), document.querySelector('#calendar'));
+    ReactDOM.render(React.createElement(ShowCalendar, { month: newMonth, year: currentYear, meals: meals, csrf: csrf }), document.querySelector('#calendar'));
 };
 'use strict';
 
@@ -284,8 +284,9 @@ var MealForm = function MealForm(props) {
 };
 
 var MealDisplay = function MealDisplay(obj) {
-    var formattedDate = obj.formattedDate;
+    var formattedDate = obj.date;
     var meals = obj.meals;
+    debugger;
     var display = React.createElement(
         'div',
         null,
@@ -451,12 +452,12 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
 
         var prevBtn = document.getElementById('prev-month');
         prevBtn.onclick = function () {
-            previousMonth(dataObjects);
+            previousMonth(dataObjects, csrf);
         };
 
         var nextBtn = document.getElementById('next-month');
         nextBtn.onclick = function () {
-            nextMonth(dataObjects);
+            nextMonth(dataObjects, csrf);
         };
 
         // Since not using react class, this is the only way to get button on clicks working
@@ -490,6 +491,10 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
             };
         }
     });
+
+    try {
+        document.getElementsByClassName('.highlighted')[0].click();
+    } catch (e) {}
 };
 
 var setup = function setup(csrf) {
