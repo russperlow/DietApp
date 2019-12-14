@@ -34,7 +34,6 @@ const getDaysInMonth = (month, year) => {
 }
 
 const tableObj = (month, year, meals) => {
-    debugger;
     let daysInMonth = getDaysInMonth(month, year)
     let firstDay = getFirstDay(month, year);
     month = month + 1;

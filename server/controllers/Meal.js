@@ -35,8 +35,6 @@ const makeMeal = (req, res) => {
 
 const deleteMeal = (req, res) => {
 
-    console.log(`request body: ${req.body}`);
-
     return Meal.MealModel.removeById(req.body._id, (err) => {
       if(err){
         console.log(`Error: ${err}`)

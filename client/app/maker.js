@@ -17,13 +17,15 @@ const handleMeal = (e) => {
 const handleDelete = (e) => {
     e.preventDefault();
 
+    const event = e;
     $('mealMessage').animate({width: 'hide'}, 350);
 
     // Serialize the data ourselves because jquery is picky about how we are selecting the #deleteMeal
     let serializedData = `_id=${e.target.querySelector('input').value}&_csrf=${e.target.querySelectorAll('input')[1].value}`;
+    e.target.parentNode.style.display = 'none';
 
-    sendAjax('DELETE', e.target.action, serializedData, function(){
-        loadmealsFromServer($('token').val());
+    sendAjax('DELETE', e.target.action, serializedData, function(res){
+        //loadmealsFromServer($('token').val());
     });
 }
 
@@ -118,7 +120,7 @@ const loadmealsFromServer = (csrf) => {
         let currentDate = null;
 
         // Group the meals to their respective dates
-        debugger;
+
         data.meals.forEach(element => {
             let thisDate = new Date(element.date);
             let formattedDate = `${thisDate.getUTCMonth()+1}/${thisDate.getUTCDate()}/${thisDate.getFullYear()}`

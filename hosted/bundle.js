@@ -16,7 +16,6 @@ var getDaysInMonth = function getDaysInMonth(month, year) {
 };
 
 var tableObj = function tableObj(month, year, meals) {
-    debugger;
     var daysInMonth = getDaysInMonth(month, year);
     var firstDay = getFirstDay(month, year);
     month = month + 1;
@@ -183,13 +182,15 @@ var handleMeal = function handleMeal(e) {
 var handleDelete = function handleDelete(e) {
     e.preventDefault();
 
+    var event = e;
     $('mealMessage').animate({ width: 'hide' }, 350);
 
     // Serialize the data ourselves because jquery is picky about how we are selecting the #deleteMeal
     var serializedData = '_id=' + e.target.querySelector('input').value + '&_csrf=' + e.target.querySelectorAll('input')[1].value;
+    e.target.parentNode.style.display = 'none';
 
-    sendAjax('DELETE', e.target.action, serializedData, function () {
-        loadmealsFromServer($('token').val());
+    sendAjax('DELETE', e.target.action, serializedData, function (res) {
+        //loadmealsFromServer($('token').val());
     });
 };
 
@@ -352,7 +353,7 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
         var currentDate = null;
 
         // Group the meals to their respective dates
-        debugger;
+
         data.meals.forEach(function (element) {
             var thisDate = new Date(element.date);
             var formattedDate = thisDate.getUTCMonth() + 1 + '/' + thisDate.getUTCDate() + '/' + thisDate.getFullYear();
