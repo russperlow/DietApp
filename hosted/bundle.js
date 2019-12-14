@@ -192,10 +192,9 @@ var handleDelete = function handleDelete(e) {
         try {
             var gParentNode = parentNode.parentNode;
             gParentNode.removeChild(parentNode);
-            if (gParentNode.children.length <= 1) {
-                loadmealsFromServer($('token').val());
-            }
+            if (gParentNode.children.length <= 1) {}
         } catch (e) {}
+        loadmealsFromServer($('token').val());
     });
 };
 

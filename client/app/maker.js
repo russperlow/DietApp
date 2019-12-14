@@ -29,11 +29,11 @@ const handleDelete = (e) => {
             const gParentNode = parentNode.parentNode;
             gParentNode.removeChild(parentNode);
             if(gParentNode.children.length <= 1){
-                loadmealsFromServer($('token').val());
             }
         }catch(e){
             
         }
+        loadmealsFromServer($('token').val());
     });
 }
 
