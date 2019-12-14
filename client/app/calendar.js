@@ -34,6 +34,7 @@ const getDaysInMonth = (month, year) => {
 }
 
 const tableObj = (month, year, meals) => {
+    debugger;
     let daysInMonth = getDaysInMonth(month, year)
     let firstDay = getFirstDay(month, year);
     month = month + 1;
@@ -66,6 +67,7 @@ const tableObj = (month, year, meals) => {
 
 const ShowCalendar = (data) => {
     let obj = tableObj(data.month, data.year, data.meals)
+
     const csrf = data.csrf;
     let table = <div>
         <div id='month-div'><button id='prev-month' className='arrowBtn'>&larr;</button>
@@ -97,8 +99,7 @@ const ShowCalendar = (data) => {
                         }
 
                         let today = new Date();
-                        console.log(data.month);
-                        console.log(today.getMonth());
+
                         if(day.data && day.data.meals){
                             let className = today.getDate() == day.data.date && today.getMonth() == data.month ? 'clickable today' : 'clickable';
                             return(<td className={className} onClick={tdClicked}>{day.data.date}</td>)

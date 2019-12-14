@@ -16,7 +16,6 @@ const handleMeal = (e) => {
 
 const handleDelete = (e) => {
     e.preventDefault();
-    debugger;
 
     $('mealMessage').animate({width: 'hide'}, 350);
 
@@ -56,7 +55,7 @@ const MealForm = (props) => {
                 <label htmlFor='calories'>Calories:</label>
                 <input id='mealCalories' type='text' name='calories' placeholder='100'/>
                 <label htmlFor='date'>Date:</label>
-                <input id='mealDate' type='date' name='date' min='2019-11-01'/>
+                <input id='mealDate' type='date' name='date'/>
                 <label htmlFor='time'>Meal Time:</label>
                 <select name='time' id='time'>
                     <option value='breakfast'>Breakfast</option>
@@ -75,12 +74,12 @@ const MealForm = (props) => {
 const MealDisplay = (obj) => {
     let formattedDate = obj.date;
     let meals = obj.meals;
-    debugger;
+    
     let display = <div>
         <h1 id='selected-date'>Meals From: {formattedDate}</h1>
         {meals.map((meal, index) => {
                 let srcVal = `/assets/img/${meal.time}.png`;
-                debugger;
+
                 return(
                     <div className='meal' key={meal._id}>
                         <img src={srcVal} alt ='meal image' className='mealImg'/>
@@ -119,9 +118,10 @@ const loadmealsFromServer = (csrf) => {
         let currentDate = null;
 
         // Group the meals to their respective dates
+        debugger;
         data.meals.forEach(element => {
             let thisDate = new Date(element.date);
-            let formattedDate = `${thisDate.getMonth()+1}/${thisDate.getUTCDate()}/${thisDate.getFullYear()}`
+            let formattedDate = `${thisDate.getUTCMonth()+1}/${thisDate.getUTCDate()}/${thisDate.getFullYear()}`
             
             // Since they have been sorted, we just check for a new date to move on to another day, if its the same as the current one, we add it
             if(currentDate == null || thisDate.getTime() != currentDate.getTime()){

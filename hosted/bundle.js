@@ -16,6 +16,7 @@ var getDaysInMonth = function getDaysInMonth(month, year) {
 };
 
 var tableObj = function tableObj(month, year, meals) {
+    debugger;
     var daysInMonth = getDaysInMonth(month, year);
     var firstDay = getFirstDay(month, year);
     month = month + 1;
@@ -48,6 +49,7 @@ var tableObj = function tableObj(month, year, meals) {
 
 var ShowCalendar = function ShowCalendar(data) {
     var obj = tableObj(data.month, data.year, data.meals);
+
     var csrf = data.csrf;
     var table = React.createElement(
         'div',
@@ -107,8 +109,7 @@ var ShowCalendar = function ShowCalendar(data) {
                             };
 
                             var today = new Date();
-                            console.log(data.month);
-                            console.log(today.getMonth());
+
                             if (day.data && day.data.meals) {
                                 var _className = today.getDate() == day.data.date && today.getMonth() == data.month ? 'clickable today' : 'clickable';
                                 return React.createElement(
@@ -181,7 +182,6 @@ var handleMeal = function handleMeal(e) {
 
 var handleDelete = function handleDelete(e) {
     e.preventDefault();
-    debugger;
 
     $('mealMessage').animate({ width: 'hide' }, 350);
 
@@ -244,7 +244,7 @@ var MealForm = function MealForm(props) {
                 { htmlFor: 'date' },
                 'Date:'
             ),
-            React.createElement('input', { id: 'mealDate', type: 'date', name: 'date', min: '2019-11-01' }),
+            React.createElement('input', { id: 'mealDate', type: 'date', name: 'date' }),
             React.createElement(
                 'label',
                 { htmlFor: 'time' },
@@ -288,7 +288,7 @@ var MealForm = function MealForm(props) {
 var MealDisplay = function MealDisplay(obj) {
     var formattedDate = obj.date;
     var meals = obj.meals;
-    debugger;
+
     var display = React.createElement(
         'div',
         null,
@@ -300,7 +300,7 @@ var MealDisplay = function MealDisplay(obj) {
         ),
         meals.map(function (meal, index) {
             var srcVal = '/assets/img/' + meal.time + '.png';
-            debugger;
+
             return React.createElement(
                 'div',
                 { className: 'meal', key: meal._id },
@@ -352,9 +352,10 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
         var currentDate = null;
 
         // Group the meals to their respective dates
+        debugger;
         data.meals.forEach(function (element) {
             var thisDate = new Date(element.date);
-            var formattedDate = thisDate.getMonth() + 1 + '/' + thisDate.getUTCDate() + '/' + thisDate.getFullYear();
+            var formattedDate = thisDate.getUTCMonth() + 1 + '/' + thisDate.getUTCDate() + '/' + thisDate.getFullYear();
 
             // Since they have been sorted, we just check for a new date to move on to another day, if its the same as the current one, we add it
             if (currentDate == null || thisDate.getTime() != currentDate.getTime()) {

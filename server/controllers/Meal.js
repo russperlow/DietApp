@@ -6,7 +6,7 @@ const makeMeal = (req, res) => {
     if (!req.body.food || !req.body.calories || !req.body.time || !req.body.date) {
       return res.status(400).json({ error: 'All foods are required' });
     }
-
+    
     const mealData = {
       food: req.body.food,
       calories: req.body.calories,
