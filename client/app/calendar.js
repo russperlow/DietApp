@@ -91,18 +91,22 @@ const ShowCalendar = (data) => {
                             $('.highlighted').removeClass('highlighted');
 
                             e.target.classList.add('highlighted');
-                            debugger;
                             ReactDOM.render(
                                 <MealDisplay meals={day.data.meals} date={day.data.formattedDate} csrf={csrf}/>, document.querySelector('#meals')
                             )
-                            console.log(e);
-                        }
-                        if(day.data && day.data.meals){
-                            return(<td className='clickable' onClick={tdClicked}>{day.data.date}</td>)
                         }
 
+                        let today = new Date();
+                        console.log(data.month);
+                        console.log(today.getMonth());
+                        if(day.data && day.data.meals){
+                            let className = today.getDate() == day.data.date && today.getMonth() == data.month ? 'clickable today' : 'clickable';
+                            return(<td className={className} onClick={tdClicked}>{day.data.date}</td>)
+                        }
+
+                        let className = today.getDate() == day.data.date && today.getMonth() == data.month ? 'nomeals today' : 'nomeals';
                         return (
-                        <td className='nomeals'>{day.data.date}</td>
+                        <td className={className}>{day.data.date}</td>
                         )
                     })}
 
@@ -134,7 +138,6 @@ const previousMonth = (meals, csrf) => {
 }
 
 const nextMonth = (meals, csrf) => {
-    debugger;
     let monthHeader = $('#month-header').text().split(',')
     let currentMonth = monthHeader[0];
     let currentYear = parseInt(monthHeader[1].trim());

@@ -391,3 +391,8 @@ table{
 #selected-date{
     text-align: center;
 }
+.today{
+    border: solid #55acee 1px;
+    border-top: 0;
+    border-left: 0;
+}

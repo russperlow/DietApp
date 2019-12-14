@@ -103,21 +103,25 @@ var ShowCalendar = function ShowCalendar(data) {
                                 $('.highlighted').removeClass('highlighted');
 
                                 e.target.classList.add('highlighted');
-                                debugger;
                                 ReactDOM.render(React.createElement(MealDisplay, { meals: day.data.meals, date: day.data.formattedDate, csrf: csrf }), document.querySelector('#meals'));
-                                console.log(e);
                             };
+
+                            var today = new Date();
+                            console.log(data.month);
+                            console.log(today.getMonth());
                             if (day.data && day.data.meals) {
+                                var _className = today.getDate() == day.data.date && today.getMonth() == data.month ? 'clickable today' : 'clickable';
                                 return React.createElement(
                                     'td',
-                                    { className: 'clickable', onClick: tdClicked },
+                                    { className: _className, onClick: tdClicked },
                                     day.data.date
                                 );
                             }
 
+                            var className = today.getDate() == day.data.date && today.getMonth() == data.month ? 'nomeals today' : 'nomeals';
                             return React.createElement(
                                 'td',
-                                { className: 'nomeals' },
+                                { className: className },
                                 day.data.date
                             );
                         })
@@ -145,7 +149,6 @@ var previousMonth = function previousMonth(meals, csrf) {
 };
 
 var nextMonth = function nextMonth(meals, csrf) {
-    debugger;
     var monthHeader = $('#month-header').text().split(',');
     var currentMonth = monthHeader[0];
     var currentYear = parseInt(monthHeader[1].trim());
@@ -362,7 +365,9 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
             dataObjects[formattedDate].push(element);
         });
 
-        ReactDOM.render(React.createElement(ShowCalendar, { month: 10, year: 2019, meals: dataObjects, csrf: csrf }), document.querySelector('#calendar'));
+        var today = new Date();
+
+        ReactDOM.render(React.createElement(ShowCalendar, { month: today.getMonth(), year: today.getFullYear(), meals: dataObjects, csrf: csrf }), document.querySelector('#calendar'));
 
         var prevBtn = document.getElementById('prev-month');
         prevBtn.onclick = function () {
@@ -412,7 +417,9 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
 };
 
 var setup = function setup(csrf) {
-    ReactDOM.render(React.createElement(ShowCalendar, { month: 11, year: 2019, csrf: csrf }), document.querySelector('#calendar'));
+    var today = new Date();
+
+    ReactDOM.render(React.createElement(ShowCalendar, { month: today.getMonth(), year: today.getFullYear(), csrf: csrf }), document.querySelector('#calendar'));
 
     ReactDOM.render(React.createElement(MealForm, { csrf: csrf }), document.querySelector('#makeMeal'));
 

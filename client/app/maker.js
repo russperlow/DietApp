@@ -132,8 +132,10 @@ const loadmealsFromServer = (csrf) => {
             dataObjects[formattedDate].push(element);
         });
 
+        let today = new Date();
+
         ReactDOM.render(
-            <ShowCalendar month={10} year={2019} meals={dataObjects} csrf={csrf}/>, document.querySelector('#calendar')
+            <ShowCalendar month={today.getMonth()} year={today.getFullYear()} meals={dataObjects} csrf={csrf}/>, document.querySelector('#calendar')
         );
     
         let prevBtn = document.getElementById('prev-month');
@@ -188,8 +190,10 @@ const loadmealsFromServer = (csrf) => {
 };
 
 const setup = function(csrf){
+    let today = new Date();
+
     ReactDOM.render(
-        <ShowCalendar month={11} year={2019} csrf={csrf}/>, document.querySelector('#calendar')
+        <ShowCalendar month={today.getMonth()} year={today.getFullYear()} csrf={csrf}/>, document.querySelector('#calendar')
     );
 
     ReactDOM.render(
