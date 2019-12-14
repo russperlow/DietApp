@@ -77,7 +77,7 @@ const MealDisplay = (obj) => {
     let meals = obj.meals;
     debugger;
     let display = <div>
-        <h3>{formattedDate}</h3>
+        <h1 id='selected-date'>Meals From: {formattedDate}</h1>
         {meals.map((meal, index) => {
                 let srcVal = `/assets/img/${meal.time}.png`;
                 debugger;

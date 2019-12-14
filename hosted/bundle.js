@@ -290,8 +290,9 @@ var MealDisplay = function MealDisplay(obj) {
         'div',
         null,
         React.createElement(
-            'h3',
-            null,
+            'h1',
+            { id: 'selected-date' },
+            'Meals From: ',
             formattedDate
         ),
         meals.map(function (meal, index) {

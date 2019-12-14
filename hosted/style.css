@@ -235,7 +235,7 @@ nav:nth-child(1) {
 }
 
 #meals {
-    /* width: 40%; */
+    width: 40%;
     min-width: 400px;
     border: 2px solid #26704F;
     border-radius: 4px;
@@ -327,11 +327,18 @@ h3.mealName {
     background-color: #FAB735;
     border-style: solid;
     border-width: 1px;
-    margin-right: 10%;
-    margin-left: 10%;
-    padding: 0px 10px 2px;
+    /* margin-right: 10%;
+    margin-left: 10%; */
+    margin-bottom: 25px;
+    padding: 2px;
     font-size: 30px;
     font-weight: bolder;
+}
+#next-month{
+    margin-right: 25%;
+}
+#prev-month{
+    margin-left: 25%;
 }
 .arrowBtn:hover{
     color: #213037;
@@ -350,6 +357,7 @@ h3.mealName {
 #month-header{
     width: 100%;
     text-align: center;
+    font-size: 26px;
 }
 .clickable{
     color: green;
@@ -362,10 +370,12 @@ h3.mealName {
     color: #26704F;
 }
 td{
-    font-size: 16px;
+    font-size: 18px;
     border: solid #26704F 1px;
     border-top: 0;
     border-left: 0;
+    font-weight: bold;
+    width: 14.2857%;
 }
 th{
     font-size: 20px;
@@ -377,4 +387,7 @@ table{
     width: 100%;
     text-align: center;
     border: solid rgba(250, 183, 53, .7) 1.5px;
+}
+#selected-date{
+    text-align: center;
 }
