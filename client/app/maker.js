@@ -17,15 +17,23 @@ const handleMeal = (e) => {
 const handleDelete = (e) => {
     e.preventDefault();
 
-    const event = e;
     $('mealMessage').animate({width: 'hide'}, 350);
 
     // Serialize the data ourselves because jquery is picky about how we are selecting the #deleteMeal
     let serializedData = `_id=${e.target.querySelector('input').value}&_csrf=${e.target.querySelectorAll('input')[1].value}`;
-    e.target.parentNode.style.display = 'none';
+    let parentNode = e.target.parentNode;
 
-    sendAjax('DELETE', e.target.action, serializedData, function(res){
-        //loadmealsFromServer($('token').val());
+
+    sendAjax('DELETE', e.target.action, serializedData, function(){
+        try{
+            const gParentNode = parentNode.parentNode;
+            gParentNode.removeChild(parentNode);
+            if(gParentNode.children.length <= 1){
+                loadmealsFromServer($('token').val());
+            }
+        }catch(e){
+            
+        }
     });
 }
 
