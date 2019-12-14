@@ -82,7 +82,7 @@ const ShowCalendar = (data) => {
                 })}
                 </tr>
             </thead>
-            <tbody>
+            <tbody id='table-body'>
             {obj.map((week, index) => {
                 return (
                 <tr>
@@ -98,7 +98,7 @@ const ShowCalendar = (data) => {
                             console.log(e);
                         }
                         if(day.data && day.data.meals){
-                            return(<td className='clickable' onClick={tdClicked}>Length: {day.data.meals.length}</td>)
+                            return(<td className='clickable' onClick={tdClicked}>{day.data.date}</td>)
                         }
 
                         return (

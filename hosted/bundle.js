@@ -93,7 +93,7 @@ var ShowCalendar = function ShowCalendar(data) {
             ),
             React.createElement(
                 'tbody',
-                null,
+                { id: 'table-body' },
                 obj.map(function (week, index) {
                     return React.createElement(
                         'tr',
@@ -111,8 +111,7 @@ var ShowCalendar = function ShowCalendar(data) {
                                 return React.createElement(
                                     'td',
                                     { className: 'clickable', onClick: tdClicked },
-                                    'Length: ',
-                                    day.data.meals.length
+                                    day.data.date
                                 );
                             }
 

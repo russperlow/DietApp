@@ -323,20 +323,6 @@ h3.mealName {
 .columnrow-active{
     height: 27%;
 }
-table{
-    width: 100%;
-    text-align: center;
-}
-#month-header{
-    width: 100%;
-    text-align: center;
-}
-.clickable{
-    color: green;
-}
-.nomeals{
-    color: grey;
-}
 .arrowBtn{
     background-color: #FAB735;
     border-style: solid;
@@ -360,4 +346,35 @@ table{
 .highlighted{
     background-color: #FAB735;
     color: #26704F;
+}
+#month-header{
+    width: 100%;
+    text-align: center;
+}
+.clickable{
+    color: green;
+}
+.nomeals{
+    color: grey;
+}
+.clickable:hover{
+    background-color: #FAB735;
+    color: #26704F;
+}
+td{
+    font-size: 16px;
+    border: solid #26704F 1px;
+    border-top: 0;
+    border-left: 0;
+}
+th{
+    font-size: 20px;
+    border: solid #26704F 2px;
+    border-top: 0;
+    border-left: 0;
+}
+table{
+    width: 100%;
+    text-align: center;
+    border: solid rgba(250, 183, 53, .7) 1.5px;
 }
