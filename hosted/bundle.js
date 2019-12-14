@@ -189,11 +189,15 @@ var handleDelete = function handleDelete(e) {
     var parentNode = e.target.parentNode;
 
     sendAjax('DELETE', e.target.action, serializedData, function () {
-        try {
-            var gParentNode = parentNode.parentNode;
-            gParentNode.removeChild(parentNode);
-            if (gParentNode.children.length <= 1) {}
-        } catch (e) {}
+        parentNode.style.display = 'none';
+        // try{
+        //     const gParentNode = parentNode.parentNode;
+        //     gParentNode.removeChild(parentNode);
+        //     if(gParentNode.children.length <= 1){
+        //     }
+        // }catch(e){
+
+        // }
         loadmealsFromServer($('token').val());
     });
 };
