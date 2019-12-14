@@ -337,88 +337,6 @@ var MealDisplay = function MealDisplay(obj) {
     return display;
 };
 
-var MealList = function MealList(props) {
-    if (props.meals.length === 0) {
-        return React.createElement(
-            'div',
-            { className: 'mealList' },
-            React.createElement(
-                'h3',
-                { className: 'emptymeal' },
-                'No meals yet'
-            )
-        );
-    }
-
-    var i = 0;
-
-    var mealNodes = Object.keys(props.meals).map(function (dateKey) {
-
-        var formattedDate = new Date(dateKey);
-        formattedDate = formattedDate.getMonth() + 1 + '/' + formattedDate.getUTCDate() + '/' + formattedDate.getFullYear();
-
-        var tableClassName = 'column';
-        if (i % 7 == 0) {
-            tableClassName = 'row';
-        }
-        i++;
-
-        var dateHtml = React.createElement(
-            'div',
-            { key: dateKey, className: tableClassName },
-            React.createElement(
-                'button',
-                { className: 'date collapsible' },
-                formattedDate
-            ),
-            props.meals[dateKey].map(function (meal, index) {
-                var srcVal = '/assets/img/' + meal.time + '.png';
-                return React.createElement(
-                    'div',
-                    { className: 'meal collapsible-content', key: meal._id },
-                    React.createElement('img', { src: srcVal, alt: 'meal image', className: 'mealImg' }),
-                    React.createElement(
-                        'h3',
-                        { className: 'time' },
-                        meal.time
-                    ),
-                    React.createElement(
-                        'h3',
-                        { className: 'mealName' },
-                        'Food: ',
-                        meal.food
-                    ),
-                    React.createElement(
-                        'h3',
-                        { className: 'mealCalories' },
-                        'Calories: ',
-                        meal.calories
-                    ),
-                    React.createElement(
-                        'form',
-                        { id: 'deleteMeal',
-                            onSubmit: handleDelete,
-                            name: 'deleteMeal',
-                            action: '/deleteMeal',
-                            method: 'DELETE' },
-                        React.createElement('input', { type: 'hidden', name: '_id', value: meal._id }),
-                        React.createElement('input', { type: 'hidden', id: 'token', name: '_csrf', value: props.csrf }),
-                        React.createElement('input', { className: 'makeMealDelete', type: 'submit', value: 'Delete' })
-                    )
-                );
-            })
-        );
-
-        return dateHtml;
-    });
-
-    return React.createElement(
-        'div',
-        { className: 'mealList' },
-        mealNodes
-    );
-};
-
 var loadmealsFromServer = function loadmealsFromServer(csrf) {
     sendAjax('GET', '/getMeals', null, function (data) {
 
@@ -443,10 +361,6 @@ var loadmealsFromServer = function loadmealsFromServer(csrf) {
 
             dataObjects[formattedDate].push(element);
         });
-
-        // ReactDOM.render(
-        //     <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
-        // );
 
         ReactDOM.render(React.createElement(ShowCalendar, { month: 10, year: 2019, meals: dataObjects, csrf: csrf }), document.querySelector('#calendar'));
 
@@ -505,10 +419,6 @@ var setup = function setup(csrf) {
     document.getElementById('showhidemealForm').onclick = function () {
         showHideMealForm(this);
     };
-
-    // ReactDOM.render(
-    //     <MealList meals={[]} csrf={csrf}/>, document.querySelector('#meals')
-    // );
 
     loadmealsFromServer(csrf);
 };

@@ -107,66 +107,6 @@ const MealDisplay = (obj) => {
     return(display);
 };
 
-const MealList = function(props){
-    if(props.meals.length === 0){
-        return(
-            <div className='mealList'>
-                <h3 className='emptymeal'>No meals yet</h3>
-            </div>
-        );
-    }
-
-    var i = 0;
-
-    const mealNodes = Object.keys(props.meals).map(dateKey => {
-
-        let formattedDate = new Date(dateKey);
-        formattedDate = `${formattedDate.getMonth()+1}/${formattedDate.getUTCDate()}/${formattedDate.getFullYear()}`
-
-        var tableClassName = 'column';
-        if(i % 7 == 0){
-            tableClassName = 'row';
-        }
-        i++;
-
-        let dateHtml = <div key={dateKey} className={tableClassName}>
-            <button className='date collapsible'>{formattedDate}</button>
-            {props.meals[dateKey].map((meal, index) => {
-                let srcVal = `/assets/img/${meal.time}.png`;
-                return(
-                    <div className='meal collapsible-content' key={meal._id}>
-                        <img src={srcVal} alt ='meal image' className='mealImg'/>
-                        <h3 className='time'>{meal.time}</h3>
-                        <h3 className='mealName'>Food: {meal.food}</h3>
-                        <h3 className='mealCalories'>Calories: {meal.calories}</h3>
-
-                        <form id='deleteMeal'
-                            onSubmit={handleDelete}
-                            name='deleteMeal'
-                            action='/deleteMeal'
-                            method='DELETE'>
-
-                                <input type='hidden' name='_id' value={meal._id}/>
-                                <input type='hidden' id='token' name='_csrf' value={props.csrf}/>
-                                <input className='makeMealDelete' type='submit' value='Delete'/>
-
-                        </form>
-                    </div>
-                )
-            })}
-        </div>;
-
-        return(dateHtml);
-
-    });
-
-    return(
-        <div className='mealList'>
-            {mealNodes}
-        </div>
-    );
-};
-
 const loadmealsFromServer = (csrf) => {
     sendAjax('GET', '/getMeals', null, (data) => {
 
@@ -191,10 +131,6 @@ const loadmealsFromServer = (csrf) => {
 
             dataObjects[formattedDate].push(element);
         });
-
-        // ReactDOM.render(
-        //     <MealList meals={dataObjects} csrf={csrf}/>, document.querySelector('#meals')
-        // );
 
         ReactDOM.render(
             <ShowCalendar month={10} year={2019} meals={dataObjects} csrf={csrf}/>, document.querySelector('#calendar')
@@ -261,10 +197,6 @@ const setup = function(csrf){
     );
 
     document.getElementById('showhidemealForm').onclick = function(){showHideMealForm(this);};
-
-    // ReactDOM.render(
-    //     <MealList meals={[]} csrf={csrf}/>, document.querySelector('#meals')
-    // );
 
     loadmealsFromServer(csrf);
 };
