@@ -261,22 +261,22 @@ var MealForm = function MealForm(props) {
                 { name: 'time', id: 'time' },
                 React.createElement(
                     'option',
-                    { value: 'breakfast' },
+                    { value: 'Breakfast' },
                     'Breakfast'
                 ),
                 React.createElement(
                     'option',
-                    { value: 'lunch' },
+                    { value: 'Lunch' },
                     'Lunch'
                 ),
                 React.createElement(
                     'option',
-                    { value: 'dinner' },
+                    { value: 'Dinner' },
                     'Dinner'
                 ),
                 React.createElement(
                     'option',
-                    { value: 'snack', selected: true },
+                    { value: 'Snack', selected: true },
                     'Snack'
                 )
             ),

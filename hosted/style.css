@@ -97,7 +97,7 @@ nav:nth-child(1) {
     background-color: #FAB735;
     border: 1px solid #26704F;
     color: #213037;
-    margin-left: 10px;
+    margin-left: 90%;
     text-decoration: none;
     font-weight: bold;
     padding: 5px;
@@ -261,7 +261,7 @@ nav:nth-child(1) {
 }
 
 img.mealImg {
-    margin-left: 25%;
+    /* margin-left: 25%; */
     margin-right: 10px;
     height: 50px;
     width: 50px;
@@ -279,11 +279,25 @@ h3.emptyMeal {
 }
 
 h3.mealName {
-    float:left;
-    width: 150px;
+    /* float:left; */
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.7em;
+    word-wrap: break-word;
+}
+
+h3.mealCalories{
+    text-align: center;
+    width: 100%;
     font-weight: bold;
     font-size: 1.2em;
     word-wrap: break-word;
+}
+
+h3.time{
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 .collapsible {
@@ -361,9 +375,18 @@ h3.mealName {
 }
 .clickable{
     color: green;
+    border: solid #26704F 1.2px;
+    border-top: 0;
+    border-left: 0;
+    font-weight: bolder;
+    font-size:20px;
 }
 .nomeals{
     color: grey;
+    border: solid grey 1px;
+    border-top: 0;
+    border-left: 0;
+
 }
 .clickable:hover{
     background-color: #FAB735;
@@ -371,10 +394,6 @@ h3.mealName {
 }
 td{
     font-size: 18px;
-    border: solid #26704F 1px;
-    border-top: 0;
-    border-left: 0;
-    font-weight: bold;
     width: 14.2857%;
 }
 th{

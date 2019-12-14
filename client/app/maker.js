@@ -68,10 +68,10 @@ const MealForm = (props) => {
                 <input id='mealDate' type='date' name='date'/>
                 <label htmlFor='time'>Meal Time:</label>
                 <select name='time' id='time'>
-                    <option value='breakfast'>Breakfast</option>
-                    <option value='lunch'>Lunch</option>
-                    <option value='dinner'>Dinner</option>
-                    <option value='snack' selected>Snack</option>
+                    <option value='Breakfast'>Breakfast</option>
+                    <option value='Lunch'>Lunch</option>
+                    <option value='Dinner'>Dinner</option>
+                    <option value='Snack' selected>Snack</option>
                 </select> 
                 <input type='hidden' id='token' name='_csrf' value={props.csrf}/>
                 <input className='makeMealSubmit' type='submit' value='Make Meal'/>
